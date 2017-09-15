@@ -14,7 +14,7 @@ function draw(configOverrides={}) {
     [0, config.height],
     [config.width, config.height],
     [config.width, config.height - config.wallHeight],
-    [config.halfWidth, 0],
+    [config.halfWidth + config.roofOffset, 0],
     [0, config.height - config.wallHeight]
   ]
 
@@ -72,7 +72,15 @@ const dimensionsFolder = gui.addFolder("dimensions")
 dimensionsFolder.add(defaultConfig, 'height').min(2500).max(6000).step(5).onChange(value => draw({ height: value }));
 dimensionsFolder.add(defaultConfig, 'width').min(2000).max(5000).step(5).onChange(value => draw({ width: value }));
 dimensionsFolder.add(defaultConfig, 'wallHeight').min(1700).max(6000).step(5).onChange(value => draw({ wallHeight: value }));
+dimensionsFolder.add(defaultConfig, 'roofOffset').min(-2000).max(2000).step(10).onChange(value => draw({ roofOffset: value }));
 dimensionsFolder.open()
+
+const finFolder = gui.addFolder("fin")
+finFolder.add(defaultConfig.fin, 'width').min(200).max(400).step(5).onChange(value => draw({ fin: { width: value }}));
+
+const gripFolder = finFolder.addFolder("grip")
+gripFolder.add(defaultConfig.fin.grip, 'width').min(100).max(400).step(5).onChange(value => draw({ fin: { grip: { width: value }}}));
+gripFolder.open()
 
 const materialFolder = gui.addFolder("material")
 materialFolder.add(defaultConfig.material, 'thickness').min(8).max(30).step(1).onChange(value => draw({ material: { thickness: value }}));
