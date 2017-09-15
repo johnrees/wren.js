@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build": "cp -R public dist && PRODUCTION=true webpack -p",
+    "deploy": "npm run build && ghpages -p dist && rm -rf dist"
   },
   "keywords": [],
   "author": "John Rees <john@bitsushi.com>",
@@ -15,6 +17,7 @@
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
+    "ghpages": "^0.0.10",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2"
   },
