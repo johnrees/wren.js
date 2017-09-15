@@ -66,10 +66,8 @@ function draw(configOverrides={}) {
   console.timeEnd("render");
 }
 
-draw({ width: 2400 })
-
-window.draw = draw
+draw()
 
 gui.add(defaultConfig, 'height').min(2500).max(6000).step(5).onChange(value => draw({ height: value }));
-gui.add(defaultConfig, 'width').min(2000).max(4200).step(5).onChange(value => draw({ width: value }));
+gui.add(defaultConfig, 'width').min(2000).max(5000).step(5).onChange(value => draw({ width: value }));
 gui.add(defaultConfig, 'wallHeight').min(1700).max(6000).step(5).onChange(value => draw({ wallHeight: value }));
