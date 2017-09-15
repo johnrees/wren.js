@@ -3,19 +3,21 @@ const SVG = require('./utils/svg')
 
 const block = (config, angle) => (x,y) => {
   const rotate = Point.rotateAroundPoint([x,y], angle)
+  const halfHoleWidth = config.grip.holeWidth/2
+  const holeOffset = 125
 
   const holes = SVG.path([
-    [x-30, y + 125],
-    [x+30, y + 125],
-    [x+30, y + 107],
-    [x-30, y + 107],
-    [x-30, y + 125]
+    [x - halfHoleWidth, y + holeOffset],
+    [x + halfHoleWidth, y + holeOffset],
+    [x + halfHoleWidth, y + holeOffset - config.material.thickness],
+    [x - halfHoleWidth, y + holeOffset - config.material.thickness],
+    [x - halfHoleWidth, y + holeOffset]
   ].map(rotate)) + SVG.path([
-    [x-30, y - 125],
-    [x+30, y - 125],
-    [x+30, y - 107],
-    [x-30, y - 107],
-    [x-30, y - 125]
+    [x - halfHoleWidth, y - holeOffset],
+    [x + halfHoleWidth, y - holeOffset],
+    [x + halfHoleWidth, y - holeOffset + config.material.thickness],
+    [x - halfHoleWidth, y - holeOffset + config.material.thickness],
+    [x - halfHoleWidth, y - holeOffset]
   ].map(rotate))
 
   return "<g>" + SVG.path([

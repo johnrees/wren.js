@@ -4,7 +4,13 @@ const config = {
   wallHeight: 2400,
   frameWidth: 150,
   offset: 400,
-  pointDistance: 300
+  pointDistance: 300,
+  grip: {
+    holeWidth: 60
+  },
+  material: {
+    thickness: 18
+  }
 }
 
 // config.mainPoints = [

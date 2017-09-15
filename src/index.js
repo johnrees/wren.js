@@ -68,6 +68,11 @@ function draw(configOverrides={}) {
 
 draw()
 
-gui.add(defaultConfig, 'height').min(2500).max(6000).step(5).onChange(value => draw({ height: value }));
-gui.add(defaultConfig, 'width').min(2000).max(5000).step(5).onChange(value => draw({ width: value }));
-gui.add(defaultConfig, 'wallHeight').min(1700).max(6000).step(5).onChange(value => draw({ wallHeight: value }));
+const dimensionsFolder = gui.addFolder("dimensions")
+dimensionsFolder.add(defaultConfig, 'height').min(2500).max(6000).step(5).onChange(value => draw({ height: value }));
+dimensionsFolder.add(defaultConfig, 'width').min(2000).max(5000).step(5).onChange(value => draw({ width: value }));
+dimensionsFolder.add(defaultConfig, 'wallHeight').min(1700).max(6000).step(5).onChange(value => draw({ wallHeight: value }));
+dimensionsFolder.open()
+
+const materialFolder = gui.addFolder("material")
+materialFolder.add(defaultConfig.material, 'thickness').min(8).max(30).step(1).onChange(value => draw({ material: { thickness: value }}));
