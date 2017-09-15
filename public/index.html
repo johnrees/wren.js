@@ -14,9 +14,6 @@
     svg {
       max-width: 100%;
       max-height: 100%;
-      stroke-width: 1;
-      stroke: black;
-      fill: none;
     }
     path {
       vector-effect: non-scaling-stroke;
@@ -29,11 +26,13 @@
 </head>
 <body>
   <div id="svg_holder">
-    <svg id="svg" viewBox="-100 -100 4400 4200">
+    <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" stroke="black" stroke-width="1.05" fill="none">
       <g id="mainPath"></g>
+      <g id="modules"></g>
       <g id="circles"></g>
     </svg>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.5/dat.gui.min.js"></script>
   <script src="js/app.bundle.js"></script>
 </body>
 </html>

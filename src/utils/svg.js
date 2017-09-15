@@ -1,4 +1,4 @@
-function _makeClosedPathFromPoints(points) {
+function _makePathFromPoints(points) {
   const start = `M${points[0]} L`;
   const middle = points
     .slice(1)
@@ -8,7 +8,7 @@ function _makeClosedPathFromPoints(points) {
 }
 
 const path = (points, attributes = {}) => {
-  var str = `<path d="${_makeClosedPathFromPoints(points)}"`;
+  var str = `<path d="${_makePathFromPoints(points)}"`;
 
   for (var key in attributes) {
     var val = attributes[key].toString();
@@ -18,7 +18,7 @@ const path = (points, attributes = {}) => {
   return str + `></path>`;
 };
 
-const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="50" fill="red" />`
+const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" fill="black" />`
 
 module.exports = {
   path,

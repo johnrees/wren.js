@@ -1,73 +1,75 @@
 const Point = require('./utils/point')
 const List = require('./utils/list')
 const SVG = require('./utils/svg')
+const block = require('./block')
+const defaultConfig = require('./config')
+const { merge } = require('lodash')
 
-const config = require('./config')
+const gui = new dat.GUI();
 
-const mainPointPairs = List.loopifyInPairs(config.mainPoints)
-const lineLengths = mainPointPairs.map(pair => Point.length(...pair))
+function draw(configOverrides={}) {
+  const config = merge(defaultConfig, configOverrides);
+  config.halfWidth = config.width/2;
+  config.mainPoints = [
+    [0, config.height],
+    [config.width, config.height],
+    [config.width, config.height - config.wallHeight],
+    [config.halfWidth, 0],
+    [0, config.height - config.wallHeight]
+  ]
 
-const points = mainPointPairs.reduce( (arr, pair) => {
-  const halfPair = [pair[0], Point.midpoint(...pair)]
-  const distance = Point.length(...halfPair)
-  const pointDistance = 300
+  console.time("calculations");
 
-  let finPoints = []
-  for (let i = pointDistance; i < distance; i += pointDistance) {
-    finPoints.push(Point.pointOnLine(i, distance)(...halfPair))
-  }
+  const mainPointPairs = List.loopifyInPairs(config.mainPoints)
+  const lineLengths = mainPointPairs.map(pair => Point.length(...pair))
 
-  return arr.concat({
-    mainPoints: pair,
-    finPoints,
-    distance,
-    angle: Point.angle(...halfPair)
-  })
-}, [])
+  const points = mainPointPairs.reduce( (arr, pair) => {
+    const midpoint = Point.midpoint(...pair)
+    const distance = Point.length(...pair)
+    const halfDistance = distance/2
 
-const block = (angle) => (x,y) => {
-  const rotate = Point.rotateAroundPoint([x,y], angle)
-  return SVG.path([
-    [x-config.frameWidth, y+150],
-      // [x-90, y+150],
-        // dogbone
-        [x-100, y+150],
-        [x-100, y+140],
-        [x-90, y+140],
-      // grip
-      [x-90, y+180],
-      [x+90, y+180],
-      // [x+90, y+150],
-        // dogbone
-        [x+90, y+140],
-        [x+100, y+140],
-        [x+100, y+150],
+    function calculatePoints(halfPair) {
+      let pts = []
+      for (let i = config.pointDistance; i < halfDistance; i += config.pointDistance) {
+        pts.push(Point.pointOnLine(i, halfDistance)(...halfPair))
+      }
+      return pts
+    }
 
-    [x+config.frameWidth, y+150],
-  ].map(rotate)) + SVG.path([
-      // // rabbit ears
-      // [x+config.frameWidth, y+100],
-      // [x+config.frameWidth-80, y+100],
-      // [x+config.frameWidth-80, y+50],
-      // [x+config.frameWidth, y+50],
-      // //
-      // [x+config.frameWidth, y-50],
-      // [x+config.frameWidth-80, y-50],
-      // [x+config.frameWidth-80, y-100],
-      // [x+config.frameWidth, y-100],
-    [x+config.frameWidth, y-150],
-      [x+90, y-150],
-      [x+90, y-180],
-      [x-90, y-180],
-      [x-90, y-150],
-    [x-config.frameWidth, y-150],
-  ].map(rotate))
+    let finPoints = []
+    finPoints.push(
+      ...calculatePoints([pair[0], midpoint]),
+      ...calculatePoints([pair[1], midpoint]).reverse()
+    )
+
+    return arr.concat({
+      mainPoints: pair,
+      finPoints,
+      distance,
+      angle: Point.angle(...pair)
+    })
+  }, [])
+
+  const viewBox = [-config.offset, -config.offset, config.width+config.offset*2, config.height+config.offset*2].join(" ")
+  const mainPath = SVG.path(config.mainPoints, { 'stroke-dasharray': "5, 10", stroke: "#CCC" })
+  const modules = points.map(groupedPoints => {
+    return "<g>" + groupedPoints.finPoints.map(pts => block(config, groupedPoints.angle)(...pts)).join("") + "</g>"
+  }).join("")
+
+  console.timeEnd("calculations");
+
+  console.time("render");
+  document.getElementById("svg").setAttribute('viewBox', viewBox)
+  document.getElementById("mainPath").innerHTML = mainPath
+  document.getElementById("modules").innerHTML = modules
+  document.getElementById("circles").innerHTML = points.map(groupedPoints => groupedPoints.finPoints.map(pair => SVG.circle(...pair)))
+  console.timeEnd("render");
 }
 
-document.getElementById("mainPath").innerHTML = SVG.path(config.mainPoints, { 'stroke-dasharray': "10, 10", stroke: "#CCC" })
+draw({ width: 2400 })
 
-// document.getElementById("circles").innerHTML = points.map(groupedPoints => groupedPoints.finPoints.map(pts => SVG.circle(...pts)))
-// document.getElementById("circles").innerHTML = points[0].finPoints.map(pts => block(0)(...pts)).join("")
-document.getElementById("circles").innerHTML = points.map(groupedPoints => {
-  return "<g>" + groupedPoints.finPoints.map(pts => block(groupedPoints.angle)(...pts)).join("") + "</g>"
-}).join("")
+window.draw = draw
+
+gui.add(defaultConfig, 'height').min(2500).max(6000).step(5).onChange(value => draw({ height: value }));
+gui.add(defaultConfig, 'width').min(2000).max(4200).step(5).onChange(value => draw({ width: value }));
+gui.add(defaultConfig, 'wallHeight').min(1700).max(6000).step(5).onChange(value => draw({ wallHeight: value }));
