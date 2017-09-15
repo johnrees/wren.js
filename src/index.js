@@ -1,5 +1,3 @@
-require('babel-polyfill')
-
 const Point = require('./utils/point')
 const List = require('./utils/list')
 const SVG = require('./utils/svg')
@@ -44,17 +42,19 @@ const block = (angle) => (x,y) => {
         [x+90, y+140],
         [x+100, y+140],
         [x+100, y+150],
+
     [x+config.frameWidth, y+150],
-      // rabbit ears
-      [x+config.frameWidth, y+100],
-      [x+config.frameWidth-80, y+100],
-      [x+config.frameWidth-80, y+50],
-      [x+config.frameWidth, y+50],
-      //
-      [x+config.frameWidth, y-50],
-      [x+config.frameWidth-80, y-50],
-      [x+config.frameWidth-80, y-100],
-      [x+config.frameWidth, y-100],
+  ].map(rotate)) + SVG.path([
+      // // rabbit ears
+      // [x+config.frameWidth, y+100],
+      // [x+config.frameWidth-80, y+100],
+      // [x+config.frameWidth-80, y+50],
+      // [x+config.frameWidth, y+50],
+      // //
+      // [x+config.frameWidth, y-50],
+      // [x+config.frameWidth-80, y-50],
+      // [x+config.frameWidth-80, y-100],
+      // [x+config.frameWidth, y-100],
     [x+config.frameWidth, y-150],
       [x+90, y-150],
       [x+90, y-180],
@@ -64,8 +64,7 @@ const block = (angle) => (x,y) => {
   ].map(rotate))
 }
 
-document.getElementById("mainPath").innerHTML = SVG.path(config.mainPoints)
-
+document.getElementById("mainPath").innerHTML = SVG.path(config.mainPoints, { 'stroke-dasharray': "10, 10", stroke: "#CCC" })
 
 // document.getElementById("circles").innerHTML = points.map(groupedPoints => groupedPoints.finPoints.map(pts => SVG.circle(...pts)))
 // document.getElementById("circles").innerHTML = points[0].finPoints.map(pts => block(0)(...pts)).join("")
