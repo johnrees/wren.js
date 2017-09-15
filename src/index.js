@@ -3,7 +3,7 @@ const List = require('./utils/list')
 const SVG = require('./utils/svg')
 const block = require('./block')
 const defaultConfig = require('./config')
-const { merge } = require('lodash')
+const merge = require('lodash/merge')
 
 const gui = new dat.GUI();
 
