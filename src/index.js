@@ -38,6 +38,7 @@ function draw(configOverrides={}) {
 
     let finPoints = []
     finPoints.push(
+      pair[0],
       ...calculatePoints([pair[0], midpoint]),
       ...calculatePoints([pair[1], midpoint]).reverse()
     )
@@ -53,7 +54,7 @@ function draw(configOverrides={}) {
   const viewBox = [-config.offset, -config.offset, config.width+config.offset*2, config.height+config.offset*2].join(" ")
   const mainPath = SVG.path(config.mainPoints, { 'stroke-dasharray': "5, 10", stroke: "#CCC" })
   const modules = points.map(groupedPoints => {
-    return "<g>" + groupedPoints.finPoints.map(pts => block(config, groupedPoints.angle)(...pts)).join("") + "</g>"
+    return "<g>" + groupedPoints.finPoints.map( (pts, index) => block(config, groupedPoints.angle, index)(...pts)).join("") + "</g>"
   }).join("")
 
   console.timeEnd("calculations");
