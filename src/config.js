@@ -15,15 +15,10 @@ const config = {
   },
   material: {
     thickness: 18
+  },
+  layers: {
+    labels: false
   }
 }
-
-// config.mainPoints = [
-//   [-config.halfWidth, 0],
-//   [config.halfWidth, 0],
-//   [config.halfWidth, config.wallHeight],
-//   [0, config.height],
-//   [-config.halfWidth, config.wallHeight]
-// ]
 
 module.exports = config

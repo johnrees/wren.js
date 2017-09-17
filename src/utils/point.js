@@ -27,6 +27,8 @@ const angle = (start, end) => {
   return Math.atan2(y, x);
 }
 
+const rad2deg = rads => (rads/Math.PI)*180
+
 const midpoint = percentageOnLine(0.5);
 
 module.exports = {
@@ -34,5 +36,6 @@ module.exports = {
   angle,
   pointOnLine,
   midpoint,
-  rotateAroundPoint
+  rotateAroundPoint,
+  rad2deg
 }

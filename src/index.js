@@ -84,3 +84,7 @@ gripFolder.open()
 
 const materialFolder = gui.addFolder("material")
 materialFolder.add(defaultConfig.material, 'thickness').min(8).max(30).step(1).onChange(value => draw({ material: { thickness: value }}));
+
+const layersFolder = gui.addFolder("layers")
+layersFolder.add(defaultConfig.layers, 'labels').onChange(value => draw({ layers: { labels: value }}));
+layersFolder.open()

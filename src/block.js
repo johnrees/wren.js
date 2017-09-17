@@ -22,6 +22,8 @@ const block = (config, angle) => (x,y) => {
     [x - halfHoleWidth, y - holeOffset]
   ].map(rotate))
 
+  const label = config.layers.labels ? SVG.label("TEST", `translate(${x} ${y}) rotate(${Point.rad2deg(angle)})`) : ""
+
   return "<g>" + SVG.path([
     [x-config.frameWidth, y+halfFinWidth],
       // [x-90, y+150],
@@ -56,7 +58,7 @@ const block = (config, angle) => (x,y) => {
       [x-halfGripWidth, y-halfFinWidth-config.material.thickness],
       [x-halfGripWidth, y-halfFinWidth],
     [x-config.frameWidth, y-halfFinWidth],
-  ].map(rotate)) + holes + "</g>"
+  ].map(rotate)) + holes + label + "</g>"
 }
 
 module.exports = block
