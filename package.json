@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server",
     "build": "cp -R public dist && PRODUCTION=true webpack -p",
-    "deploy": "npm run build && ghpages -p dist && rm -rf dist"
+    "deploy": "npm run build && ghpages -p dist && rm -rf dist",
+    "analyze": "webpack -p --profile --json > stats.json && webpack-bundle-analyzer stats.json"
   },
   "keywords": [],
   "author": "John Rees <john@bitsushi.com>",
