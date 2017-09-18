@@ -119,3 +119,12 @@ materialFolder.add(defaultConfig.material, 'thickness').min(8).max(30).step(1).o
 const layersFolder = gui.addFolder("layers")
 layersFolder.add(defaultConfig.layers, 'labels').onChange(value => draw({ layers: { labels: value }}));
 layersFolder.open()
+
+
+function handleDragStart(event) {
+  const circle = event.target
+  console.log(circle)
+}
+for (const circle of [...document.querySelectorAll('circle')]) {
+  circle.addEventListener("mousedown", handleDragStart)
+}
