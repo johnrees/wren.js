@@ -25,12 +25,18 @@
       height: 100vh;
       padding: 25px;
     }
+    circle {
+      cursor: move;
+    }
   </style>
 </head>
 <body>
   <div id="svg_holder">
     <svg id="svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" stroke="black" stroke-width="1.05" fill="none">
-      <defs><style>.label{ font-size: 60px; fill: #000; stroke: none; font-family: ArialMT, Arial; }</style></defs>
+      <defs><style>
+        .label{ font-size: 60px; fill: #000; stroke: none; font-family: ArialMT, Arial; }
+        circle { fill: black; stroke: none; }
+      </style></defs>
       <g id="mainPath"></g>
       <g id="modules"></g>
       <g id="circles"></g>

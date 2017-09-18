@@ -21,7 +21,7 @@ const path = (points, attributes = {}) => {
   return str + `></path>`;
 };
 
-const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" fill="black" />`
+const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" />`
 
 module.exports = {
   path,
