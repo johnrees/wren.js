@@ -7,6 +7,16 @@ const merge = require('lodash/merge')
 
 const gui = new dat.GUI();
 
+function offset(points, delta, scale=100) {
+  const paths = [points.map( pts => ({X: pts[0] * scale, Y: pts[1] * scale }))];
+  const co = new ClipperLib.ClipperOffset();
+  const offsetted_paths = new ClipperLib.Paths();
+  co.MiterLimit = 10;
+  co.AddPaths(paths, ClipperLib.JoinType.jtMiter, ClipperLib.EndType.etClosedPolygon);
+  co.Execute(offsetted_paths, delta * scale);
+  return offsetted_paths[0].map(pts => [pts.X/scale, pts.Y/scale])
+}
+
 function draw(configOverrides={}) {
   const config = merge(defaultConfig, configOverrides);
   config.halfWidth = config.width/2;
@@ -18,12 +28,17 @@ function draw(configOverrides={}) {
     [0, config.height - config.wallHeight]
   ]
 
-  console.time("calculations");
+  console.time("clipper");
+  const mainPoints = offset(config.mainPoints, 0)
+  const outerPoints = offset(config.mainPoints, config.fin.width/2)
+  const innerPoints = offset(config.mainPoints, -config.fin.width/2)
+  console.timeEnd("clipper");
 
-  const mainPointPairs = List.loopifyInPairs(config.mainPoints)
+  console.time("calculations");
+  const mainPointPairs = List.loopifyInPairs(mainPoints)
   const lineLengths = mainPointPairs.map(pair => Point.length(...pair))
 
-  const points = mainPointPairs.reduce( (arr, pair) => {
+  const points = mainPointPairs.reduce( (arr, pair, index) => {
     const midpoint = Point.midpoint(...pair)
     const distance = Point.length(...pair)
     const halfDistance = distance/2
@@ -44,17 +59,24 @@ function draw(configOverrides={}) {
     )
 
     return arr.concat({
-      mainPoints: pair,
+      points: {
+        main: pair,
+        inner: innerPoints[index],
+        outer: outerPoints[index]
+      },
       finPoints,
       distance,
       angle: Point.angle(...pair)
     })
   }, [])
 
-  const viewBox = [-config.offset, -config.offset, config.width+config.offset*2, config.height+config.offset*2].join(" ")
+
   const mainPath = SVG.path(config.mainPoints, { 'stroke-dasharray': "5, 10", stroke: "#CCC" })
-  const modules = points.map(groupedPoints => {
-    return "<g>" + groupedPoints.finPoints.map( (pts, index) => block(config, groupedPoints.angle, index)(...pts)).join("") + "</g>"
+
+  const safeIndex = List.safeIndex(points.length)
+  const modules = points.map( (groupedPoints, armIndex) => {
+    const previousArm = points[safeIndex(armIndex - 1)]
+    return "<g>" + groupedPoints.finPoints.map( (pts, pointIndex) => block(config, groupedPoints, pointIndex, previousArm)(...pts)).join("") + "</g>"
   }).join("")
 
   console.timeEnd("calculations");

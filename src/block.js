@@ -1,7 +1,9 @@
 const Point = require('./utils/point')
 const SVG = require('./utils/svg')
 
-const block = (config, angle, index) => (x,y) => {
+const block = (config, groupedPoints, index, previousArm) => (x,y) => {
+  const {angle, points} = groupedPoints
+  const {inner, outer} = points
   const rotate = Point.rotateAroundPoint([x,y], angle)
   const halfHoleWidth = config.fin.grip.holeWidth/2
   const halfFinWidth = config.fin.width/2
@@ -10,6 +12,27 @@ const block = (config, angle, index) => (x,y) => {
   const holeOffset = halfFinWidth
 
   if (index === 0) {
+    return SVG.path([
+      Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.pointDistance/2, y - halfFinWidth]),
+      outer,
+      rotate([x + config.pointDistance/2, y - halfFinWidth])
+    ]) + SVG.path([
+      Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.pointDistance/2, y + halfFinWidth]),
+      inner,
+      rotate([x + config.pointDistance/2, y + halfFinWidth])
+    ])
+
+    if (y === 0) {
+      // const p = Point.rotateAroundPoint([x,y], previousArm.angle - Math.PI)([x + config.pointDistance/2,y])
+      // return SVG.path([
+      //   [x,y],
+      //   [x,y - (150 * Math.cos(angle)) ]
+      // ])
+      // return SVG.path([
+      //   [x,y],
+      //   Point.rotateAroundPoint([x,y], angle)([x + config.pointDistance/2,y])
+      // ])
+    }
     if (y === config.height && x > 0) {
       return "<g>" + SVG.path([
         [x - halfFinWidth - 25, y + halfFinWidth],
