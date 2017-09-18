@@ -82,10 +82,18 @@ function draw(configOverrides={}) {
   console.timeEnd("calculations");
 
   console.time("render");
-  document.getElementById("svg").setAttribute('viewBox', viewBox)
+
+  // document.getElementById("svg").setAttribute('viewBox', viewBox)
   document.getElementById("mainPath").innerHTML = mainPath
   document.getElementById("modules").innerHTML = modules
   document.getElementById("circles").innerHTML = points.map(groupedPoints => groupedPoints.finPoints.map(pair => SVG.circle(...pair)))
+
+  // const viewBox = [-config.offset, -config.offset, config.width+config.offset*2, config.height+config.offset*2].join(" ")
+  // document.getElementById("svg").setAttribute('viewBox', viewBox)
+
+  const viewBox = document.getElementById("svg").getBBox()
+  document.getElementById("svg").setAttribute('viewBox', [viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(" "))
+
   console.timeEnd("render");
 }
 
