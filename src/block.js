@@ -4,6 +4,9 @@ const SVG = require('./utils/svg')
 const block = (config, groupedPoints, index, previousArm) => (x,y) => {
   const {angle, points} = groupedPoints
   const {inner, outer} = points
+
+  const isExtendedPoint = index === Math.ceil(groupedPoints.finPoints.length/2)
+
   const rotate = Point.rotateAroundPoint([x,y], angle)
   const halfHoleWidth = config.fin.grip.holeWidth/2
   const halfFinWidth = config.fin.width/2
@@ -12,27 +15,17 @@ const block = (config, groupedPoints, index, previousArm) => (x,y) => {
   const holeOffset = halfFinWidth
 
   if (index === 0) {
-    return SVG.path([
-      Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.pointDistance/2, y - halfFinWidth]),
-      outer,
-      rotate([x + config.pointDistance/2, y - halfFinWidth])
-    ]) + SVG.path([
-      Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.pointDistance/2, y + halfFinWidth]),
-      inner,
-      rotate([x + config.pointDistance/2, y + halfFinWidth])
-    ])
-
-    if (y === 0) {
-      // const p = Point.rotateAroundPoint([x,y], previousArm.angle - Math.PI)([x + config.pointDistance/2,y])
-      // return SVG.path([
-      //   [x,y],
-      //   [x,y - (150 * Math.cos(angle)) ]
-      // ])
-      // return SVG.path([
-      //   [x,y],
-      //   Point.rotateAroundPoint([x,y], angle)([x + config.pointDistance/2,y])
-      // ])
-    }
+    // if (y === 0) {
+    //   // const p = Point.rotateAroundPoint([x,y], previousArm.angle - Math.PI)([x + config.pointDistance/2,y])
+    //   // return SVG.path([
+    //   //   [x,y],
+    //   //   [x,y - (150 * Math.cos(angle)) ]
+    //   // ])
+    //   // return SVG.path([
+    //   //   [x,y],
+    //   //   Point.rotateAroundPoint([x,y], angle)([x + config.pointDistance/2,y])
+    //   // ])
+    // }
     if (y === config.height && x > 0) {
       return "<g>" + SVG.path([
         [x - halfFinWidth - 25, y + halfFinWidth],
@@ -46,6 +39,16 @@ const block = (config, groupedPoints, index, previousArm) => (x,y) => {
         [x + halfFinWidth, y + halfFinWidth],
         [x + halfFinWidth, y - halfFinWidth - 25]
       ]) + "</g>"
+    } else {
+      return SVG.path([
+        Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.pointDistance/2, y - halfFinWidth]),
+        outer,
+        rotate([x + config.pointDistance/2, y - halfFinWidth])
+      ]) + SVG.path([
+        Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.pointDistance/2, y + halfFinWidth]),
+        inner,
+        rotate([x + config.pointDistance/2, y + halfFinWidth])
+      ])
     }
   } else {
     const holes = SVG.path([
@@ -62,8 +65,25 @@ const block = (config, groupedPoints, index, previousArm) => (x,y) => {
       [x - halfHoleWidth, y - holeOffset]
     ].map(rotate))
 
+    const rabbitEars = (index === 2 || index === groupedPoints.finPoints.length - 3) ? [
+      [x+config.frameWidth, y+100+config.material.thickness+10],
+      [x+config.frameWidth, y+75],
+      [x+config.frameWidth-85, y+75],
+      [x+config.frameWidth-85, y+25],
+      [x+config.frameWidth, y+25],
+      //
+      [x+config.frameWidth, y-25],
+      [x+config.frameWidth-85, y-25],
+      [x+config.frameWidth-85, y-75],
+      [x+config.frameWidth, y-75],
+    ] : []
+
+    groupedPoints.points.end = [x-config.frameWidth, y+halfFinWidth]
+
+    const distance = isExtendedPoint ? x+config.frameWidth-Point.length(groupedPoints.finPoints[index], groupedPoints.finPoints[index-1]) : x-config.frameWidth
+
     return "<g>" + SVG.path([
-      [x-config.frameWidth, y+halfFinWidth],
+      [distance, y+halfFinWidth],
         // [x-90, y+150],
           // dogbone
           [x-100, y+halfFinWidth],
@@ -80,22 +100,13 @@ const block = (config, groupedPoints, index, previousArm) => (x,y) => {
 
       [x+config.frameWidth, y+halfFinWidth],
     ].map(rotate)) + SVG.path([
-        // // rabbit ears
-        // [x+config.frameWidth, y+100],
-        // [x+config.frameWidth-80, y+100],
-        // [x+config.frameWidth-80, y+50],
-        // [x+config.frameWidth, y+50],
-        // //
-        // [x+config.frameWidth, y-50],
-        // [x+config.frameWidth-80, y-50],
-        // [x+config.frameWidth-80, y-100],
-        // [x+config.frameWidth, y-100],
+      ...rabbitEars,
       [x+config.frameWidth, y-halfFinWidth],
         [x+halfGripWidth, y-halfFinWidth],
         [x+halfGripWidth, y-halfFinWidth-config.material.thickness],
         [x-halfGripWidth, y-halfFinWidth-config.material.thickness],
         [x-halfGripWidth, y-halfFinWidth],
-      [x-config.frameWidth, y-halfFinWidth],
+      [distance, y-halfFinWidth],
     ].map(rotate)) + holes + label + "</g>"
   }
 

@@ -7,6 +7,21 @@ const merge = require('lodash/merge')
 
 const gui = new dat.GUI();
 
+function midpoints(minDistance, a,b) {
+  const lastIndex = a.length-1
+  const midpointDistance = Point.length(a[lastIndex], b[0])
+  if (midpointDistance <= minDistance) {
+    return [
+      ...a.slice(0,lastIndex),
+      ...b
+      // Point.midpoint(a[lastIndex], b[0]),
+      // ...b.slice(1)
+    ]
+  } else {
+    return [...a,...b]
+  }
+}
+
 function offset(points, delta, scale=100) {
   const paths = [points.map( pts => ({X: pts[0] * scale, Y: pts[1] * scale }))];
   const co = new ClipperLib.ClipperOffset();
@@ -54,8 +69,11 @@ function draw(configOverrides={}) {
     let finPoints = []
     finPoints.push(
       pair[0],
-      ...calculatePoints([pair[0], midpoint]),
-      ...calculatePoints([pair[1], midpoint]).reverse()
+      ...midpoints(
+        config.pointDistance*0.75,
+        calculatePoints([pair[0], midpoint]),
+        calculatePoints([pair[1], midpoint]).reverse()
+      )
     )
 
     return arr.concat({
