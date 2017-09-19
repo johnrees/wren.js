@@ -15,10 +15,13 @@ const config = {
     },
   },
   material: {
-    thickness: 18
+    thickness: 18,
+    height: 2440,
+    width: 1220
   },
   layers: {
-    labels: false
+    labels: false,
+    sheets: false
   },
   svg: {
     padding: 400,

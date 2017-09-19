@@ -93,7 +93,15 @@ function draw(configOverrides={}) {
 
   console.time("render");
 
+  const sheets = config.layers.sheets ? SVG.path([
+    [0,0],
+    [0, config.material.height],
+    [config.material.width, config.material.height],
+    [config.material.width, 0]
+  ]) : ""
+
   // document.getElementById("svg").setAttribute('viewBox', viewBox)
+  document.getElementById("sheets").innerHTML = sheets
   document.getElementById("mainPath").innerHTML = mainPath
   document.getElementById("modules").innerHTML = modules
   document.getElementById("circles").innerHTML = points.map(groupedPoints => groupedPoints.finPoints.map(pair => SVG.circle(...pair)))
@@ -130,6 +138,7 @@ materialFolder.add(defaultConfig.material, 'thickness').min(8).max(30).step(1).o
 
 const layersFolder = gui.addFolder("layers")
 layersFolder.add(defaultConfig.layers, 'labels').onChange(value => draw({ layers: { labels: value }}));
+layersFolder.add(defaultConfig.layers, 'sheets').onChange(value => draw({ layers: { sheets: value }}));
 layersFolder.open()
 
 
