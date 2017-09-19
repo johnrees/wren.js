@@ -1,12 +1,13 @@
 const config = {
-  width: 3900,
-  height: 4300,
-  roofOffset: 0,
-  wallHeight: 2400,
-  frameWidth: 150,
-  offset: 400,
-  pointDistance: 300,
+  dimensions: {
+    width: 3900,
+    height: 4300,
+    roofOffset: 0,
+    wallHeight: 2400,
+  },
   fin: {
+    frameWidth: 150,
+    pointDistance: 300,
     width: 250,
     grip: {
       width: 180,
@@ -18,6 +19,9 @@ const config = {
   },
   layers: {
     labels: false
+  },
+  svg: {
+    padding: 400,
   }
 }
 

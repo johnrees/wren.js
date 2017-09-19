@@ -1,9 +1,8 @@
-const Point = require('./utils/point')
-const List = require('./utils/list')
-const SVG = require('./utils/svg')
-const block = require('./block')
-const defaultConfig = require('./config')
-const merge = require('lodash/merge')
+import { Point, List, SVG } from "./utils"
+import merge from 'lodash/merge'
+import defaultConfig from './inputs/defaults'
+import block from './outputs/block'
+import Points from './outputs/points'
 
 function midpoints(minDistance, a,b) {
   const lastIndex = a.length-1
@@ -20,31 +19,26 @@ function midpoints(minDistance, a,b) {
   }
 }
 
-function offset(points, delta, scale=100) {
-  const paths = [points.map( pts => ({X: pts[0] * scale, Y: pts[1] * scale }))];
-  const co = new ClipperLib.ClipperOffset();
-  const offsetted_paths = new ClipperLib.Paths();
-  co.MiterLimit = 10;
-  co.AddPaths(paths, ClipperLib.JoinType.jtMiter, ClipperLib.EndType.etClosedPolygon);
-  co.Execute(offsetted_paths, delta * scale);
-  return offsetted_paths[0].map(pts => [pts.X/scale, pts.Y/scale])
+function _calculateDefaultPoints(config) {
+  return [
+    [0, config.dimensions.height],
+    [config.dimensions.width, config.dimensions.height],
+    [config.dimensions.width, config.dimensions.height - config.dimensions.wallHeight],
+    [config.dimensions.width/2 + config.dimensions.roofOffset, 0],
+    [0, config.dimensions.height - config.dimensions.wallHeight]
+  ]
 }
 
 function draw(configOverrides={}) {
   const config = merge(defaultConfig, configOverrides);
-  config.halfWidth = config.width/2;
-  config.mainPoints = [
-    [0, config.height],
-    [config.width, config.height],
-    [config.width, config.height - config.wallHeight],
-    [config.halfWidth + config.roofOffset, 0],
-    [0, config.height - config.wallHeight]
-  ]
+  config.mainPoints = _calculateDefaultPoints(config);
 
   console.time("clipper");
-  const mainPoints = offset(config.mainPoints, 0)
-  const outerPoints = offset(config.mainPoints, config.fin.width/2)
-  const innerPoints = offset(config.mainPoints, -config.fin.width/2)
+  const {
+    main: mainPoints,
+    outer: outerPoints,
+    inner: innerPoints
+  } = Points(config.mainPoints, config.fin.width)
   console.timeEnd("clipper");
 
   console.time("calculations");
@@ -58,7 +52,7 @@ function draw(configOverrides={}) {
 
     function calculatePoints(halfPair) {
       let pts = []
-      for (let i = config.pointDistance; i < halfDistance; i += config.pointDistance) {
+      for (let i = config.fin.pointDistance; i < halfDistance; i += config.fin.pointDistance) {
         pts.push(Point.pointOnLine(i, halfDistance)(...halfPair))
       }
       return pts
@@ -68,7 +62,7 @@ function draw(configOverrides={}) {
     finPoints.push(
       pair[0],
       ...midpoints(
-        config.pointDistance*0.75,
+        config.fin.pointDistance*0.75,
         calculatePoints([pair[0], midpoint]),
         calculatePoints([pair[1], midpoint]).reverse()
       )
@@ -104,7 +98,7 @@ function draw(configOverrides={}) {
   document.getElementById("modules").innerHTML = modules
   document.getElementById("circles").innerHTML = points.map(groupedPoints => groupedPoints.finPoints.map(pair => SVG.circle(...pair)))
 
-  // const viewBox = [-config.offset, -config.offset, config.width+config.offset*2, config.height+config.offset*2].join(" ")
+  // const viewBox = [-config.svg.padding, -config.svg.padding, config.dimensions.width+config.svg.padding*2, config.dimensions.height+config.svg.padding*2].join(" ")
   // document.getElementById("svg").setAttribute('viewBox', viewBox)
 
   const viewBox = document.getElementById("svg").getBBox()
@@ -118,10 +112,10 @@ draw()
 const gui = new dat.GUI();
 
 const dimensionsFolder = gui.addFolder("dimensions")
-dimensionsFolder.add(defaultConfig, 'height').min(2500).max(6000).step(5).onChange(value => draw({ height: value }));
-dimensionsFolder.add(defaultConfig, 'width').min(2000).max(5000).step(5).onChange(value => draw({ width: value }));
-dimensionsFolder.add(defaultConfig, 'wallHeight').min(1700).max(6000).step(5).onChange(value => draw({ wallHeight: value }));
-dimensionsFolder.add(defaultConfig, 'roofOffset').min(-2000).max(2000).step(10).onChange(value => draw({ roofOffset: value }));
+dimensionsFolder.add(defaultConfig.dimensions, 'height').min(2500).max(6000).step(5).onChange(value => draw({ height: value }));
+dimensionsFolder.add(defaultConfig.dimensions, 'width').min(2000).max(5000).step(5).onChange(value => draw({ width: value }));
+dimensionsFolder.add(defaultConfig.dimensions, 'wallHeight').min(1700).max(6000).step(5).onChange(value => draw({ wallHeight: value }));
+dimensionsFolder.add(defaultConfig.dimensions, 'roofOffset').min(-2000).max(2000).step(10).onChange(value => draw({ roofOffset: value }));
 dimensionsFolder.open()
 
 const finFolder = gui.addFolder("fin")

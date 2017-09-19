@@ -1,5 +1,4 @@
-const Point = require('./utils/point')
-const SVG = require('./utils/svg')
+import { Point, SVG } from "../utils"
 
 const block = (config, groupedPoints, index, previousArm) => (x,y) => {
   const {angle, points} = groupedPoints
@@ -16,17 +15,17 @@ const block = (config, groupedPoints, index, previousArm) => (x,y) => {
 
   if (index === 0) {
     // if (y === 0) {
-    //   // const p = Point.rotateAroundPoint([x,y], previousArm.angle - Math.PI)([x + config.pointDistance/2,y])
+    //   // const p = Point.rotateAroundPoint([x,y], previousArm.angle - Math.PI)([x + config.fin.pointDistance/2,y])
     //   // return SVG.path([
     //   //   [x,y],
     //   //   [x,y - (150 * Math.cos(angle)) ]
     //   // ])
     //   // return SVG.path([
     //   //   [x,y],
-    //   //   Point.rotateAroundPoint([x,y], angle)([x + config.pointDistance/2,y])
+    //   //   Point.rotateAroundPoint([x,y], angle)([x + config.fin.pointDistance/2,y])
     //   // ])
     // }
-    if (y === config.height && x > 0) {
+    if (y === config.dimensions.height && x > 0) {
       return "<g>" + SVG.path([
         [x - halfFinWidth - 25, y + halfFinWidth],
         [x - 50, y + halfFinWidth],
@@ -41,13 +40,13 @@ const block = (config, groupedPoints, index, previousArm) => (x,y) => {
       ]) + "</g>"
     } else {
       return SVG.path([
-        Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.pointDistance/2, y - halfFinWidth]),
+        Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.fin.pointDistance/2, y - halfFinWidth]),
         outer,
-        rotate([x + config.pointDistance/2, y - halfFinWidth])
+        rotate([x + config.fin.pointDistance/2, y - halfFinWidth])
       ]) + SVG.path([
-        Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.pointDistance/2, y + halfFinWidth]),
+        Point.rotateAroundPoint([x,y], previousArm.angle)([x - config.fin.pointDistance/2, y + halfFinWidth]),
         inner,
-        rotate([x + config.pointDistance/2, y + halfFinWidth])
+        rotate([x + config.fin.pointDistance/2, y + halfFinWidth])
       ])
     }
   } else {
@@ -66,21 +65,21 @@ const block = (config, groupedPoints, index, previousArm) => (x,y) => {
     ].map(rotate))
 
     const rabbitEars = (index === 2 || index === groupedPoints.finPoints.length - 3) ? [
-      [x+config.frameWidth, y+100+config.material.thickness+10],
-      [x+config.frameWidth, y+75],
-      [x+config.frameWidth-85, y+75],
-      [x+config.frameWidth-85, y+25],
-      [x+config.frameWidth, y+25],
+      [x+config.fin.frameWidth, y+100+config.material.thickness+10],
+      [x+config.fin.frameWidth, y+75],
+      [x+config.fin.frameWidth-85, y+75],
+      [x+config.fin.frameWidth-85, y+25],
+      [x+config.fin.frameWidth, y+25],
       //
-      [x+config.frameWidth, y-25],
-      [x+config.frameWidth-85, y-25],
-      [x+config.frameWidth-85, y-75],
-      [x+config.frameWidth, y-75],
+      [x+config.fin.frameWidth, y-25],
+      [x+config.fin.frameWidth-85, y-25],
+      [x+config.fin.frameWidth-85, y-75],
+      [x+config.fin.frameWidth, y-75],
     ] : []
 
-    groupedPoints.points.end = [x-config.frameWidth, y+halfFinWidth]
+    groupedPoints.points.end = [x-config.fin.frameWidth, y+halfFinWidth]
 
-    const distance = isExtendedPoint ? x+config.frameWidth-Point.length(groupedPoints.finPoints[index], groupedPoints.finPoints[index-1]) : x-config.frameWidth
+    const distance = isExtendedPoint ? x+config.fin.frameWidth-Point.length(groupedPoints.finPoints[index], groupedPoints.finPoints[index-1]) : x-config.fin.frameWidth
 
     return "<g>" + SVG.path([
       [distance, y+halfFinWidth],
@@ -98,10 +97,10 @@ const block = (config, groupedPoints, index, previousArm) => (x,y) => {
           [x+100, y+halfFinWidth-10],
           [x+100, y+halfFinWidth],
 
-      [x+config.frameWidth, y+halfFinWidth],
+      [x+config.fin.frameWidth, y+halfFinWidth],
     ].map(rotate)) + SVG.path([
       ...rabbitEars,
-      [x+config.frameWidth, y-halfFinWidth],
+      [x+config.fin.frameWidth, y-halfFinWidth],
         [x+halfGripWidth, y-halfFinWidth],
         [x+halfGripWidth, y-halfFinWidth-config.material.thickness],
         [x-halfGripWidth, y-halfFinWidth-config.material.thickness],
