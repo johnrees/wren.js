@@ -5,8 +5,6 @@ const block = require('./block')
 const defaultConfig = require('./config')
 const merge = require('lodash/merge')
 
-const gui = new dat.GUI();
-
 function midpoints(minDistance, a,b) {
   const lastIndex = a.length-1
   const midpointDistance = Point.length(a[lastIndex], b[0])
@@ -116,6 +114,8 @@ function draw(configOverrides={}) {
 }
 
 draw()
+
+const gui = new dat.GUI();
 
 const dimensionsFolder = gui.addFolder("dimensions")
 dimensionsFolder.add(defaultConfig, 'height').min(2500).max(6000).step(5).onChange(value => draw({ height: value }));
