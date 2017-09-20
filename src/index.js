@@ -3,6 +3,7 @@ import merge from 'lodash/merge'
 import defaultConfig from './inputs/defaults'
 import block from './outputs/block'
 import Points from './outputs/points'
+import HUD from './ui/hud'
 
 function midpoints(minDistance, a,b) {
   const lastIndex = a.length-1
@@ -117,30 +118,7 @@ function draw(configOverrides={}) {
 
 draw()
 
-const gui = new dat.GUI();
-
-const dimensionsFolder = gui.addFolder("dimensions")
-dimensionsFolder.add(defaultConfig.dimensions, 'height').min(2500).max(6000).step(5).onChange(value => draw({ height: value }));
-dimensionsFolder.add(defaultConfig.dimensions, 'width').min(2000).max(5000).step(5).onChange(value => draw({ width: value }));
-dimensionsFolder.add(defaultConfig.dimensions, 'wallHeight').min(1700).max(6000).step(5).onChange(value => draw({ wallHeight: value }));
-dimensionsFolder.add(defaultConfig.dimensions, 'roofOffset').min(-2000).max(2000).step(10).onChange(value => draw({ roofOffset: value }));
-dimensionsFolder.open()
-
-const finFolder = gui.addFolder("fin")
-finFolder.add(defaultConfig.fin, 'width').min(200).max(400).step(5).onChange(value => draw({ fin: { width: value }}));
-
-const gripFolder = finFolder.addFolder("grip")
-gripFolder.add(defaultConfig.fin.grip, 'width').min(100).max(400).step(5).onChange(value => draw({ fin: { grip: { width: value }}}));
-gripFolder.open()
-
-const materialFolder = gui.addFolder("material")
-materialFolder.add(defaultConfig.material, 'thickness').min(8).max(30).step(1).onChange(value => draw({ material: { thickness: value }}));
-
-const layersFolder = gui.addFolder("layers")
-layersFolder.add(defaultConfig.layers, 'labels').onChange(value => draw({ layers: { labels: value }}));
-layersFolder.add(defaultConfig.layers, 'sheets').onChange(value => draw({ layers: { sheets: value }}));
-layersFolder.open()
-
+const hud = HUD(defaultConfig, draw)
 
 function handleDragStart(event) {
   const circle = event.target
