@@ -5,7 +5,9 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = {
   context: path.resolve(__dirname, './src'),
   entry: {
-    app: ['babel-polyfill', './index.js']
+    // wren: ['babel-polyfill', './index.js'],
+    wren: './index.js',
+    twod: './previews/twod.js'
   },
   output: {
     filename: '[name].bundle.js',

@@ -1,4 +1,5 @@
 const config = {
+  DEBUG: false,
   dimensions: {
     width: 3900,
     height: 4300,

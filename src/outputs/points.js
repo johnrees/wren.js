@@ -1,3 +1,5 @@
+import ClipperLib from "clipper-lib"
+
 function Points(points, finWidth) {
   return {
     main: _offset(points, 0),

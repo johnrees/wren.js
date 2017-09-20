@@ -1,9 +1,10 @@
-import { Point, List, SVG } from "./utils"
+import { Point, List, SVG, Misc } from "./utils"
 import merge from 'lodash/merge'
 import defaultConfig from './inputs/defaults'
 import block from './outputs/block'
 import Points from './outputs/points'
-import HUD from './ui/hud'
+
+Misc.disableConsole(!defaultConfig.DEBUG)
 
 function midpoints(minDistance, a,b) {
   const lastIndex = a.length-1
@@ -30,7 +31,7 @@ function _calculateDefaultPoints(config) {
   ]
 }
 
-function draw(configOverrides={}) {
+function Wren(configOverrides={}) {
   const config = merge(defaultConfig, configOverrides);
   config.mainPoints = _calculateDefaultPoints(config);
 
@@ -80,50 +81,19 @@ function draw(configOverrides={}) {
       angle: Point.angle(...pair)
     })
   }, [])
-
-
   const mainPath = SVG.path(config.mainPoints, { 'stroke-dasharray': "5, 10", stroke: "#CCC" })
-
   const safeIndex = List.safeIndex(points.length)
   const modules = points.map( (groupedPoints, armIndex) => {
     const previousArm = points[safeIndex(armIndex - 1)]
     return "<g>" + groupedPoints.finPoints.map( (pts, pointIndex) => block(config, groupedPoints, pointIndex, previousArm)(...pts)).join("") + "</g>"
   }).join("")
-
   console.timeEnd("calculations");
 
-  console.time("render");
-
-  const sheets = config.layers.sheets ? SVG.path([
-    [0,0],
-    [0, config.material.height],
-    [config.material.width, config.material.height],
-    [config.material.width, 0]
-  ]) : ""
-
-  // document.getElementById("svg").setAttribute('viewBox', viewBox)
-  document.getElementById("sheets").innerHTML = sheets
-  document.getElementById("mainPath").innerHTML = mainPath
-  document.getElementById("modules").innerHTML = modules
-  document.getElementById("circles").innerHTML = points.map(groupedPoints => groupedPoints.finPoints.map(pair => SVG.circle(...pair)))
-
-  // const viewBox = [-config.svg.padding, -config.svg.padding, config.dimensions.width+config.svg.padding*2, config.dimensions.height+config.svg.padding*2].join(" ")
-  // document.getElementById("svg").setAttribute('viewBox', viewBox)
-
-  const viewBox = document.getElementById("svg").getBBox()
-  document.getElementById("svg").setAttribute('viewBox', [viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(" "))
-
-  console.timeEnd("render");
+  return {
+    outputs: {
+      points,
+    }
+  }
 }
 
-draw()
-
-const hud = HUD(defaultConfig, draw)
-
-function handleDragStart(event) {
-  const circle = event.target
-  console.log(circle)
-}
-for (const circle of [...document.querySelectorAll('circle')]) {
-  circle.addEventListener("mousedown", handleDragStart)
-}
+module.exports = Wren
