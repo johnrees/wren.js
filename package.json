@@ -1,8 +1,8 @@
 {
-  "name": "wren",
+  "name": "Wren.js",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest",
     "start": "webpack-dev-server",
@@ -11,8 +11,8 @@
     "analyze": "webpack -p --profile --json > stats.json && webpack-bundle-analyzer stats.json"
   },
   "keywords": [],
-  "author": "John Rees <john@bitsushi.com>",
-  "license": "MIT",
+  "author": "John Rees <john@wikihouse.cc>",
+  "license": "MPL-2.0",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
