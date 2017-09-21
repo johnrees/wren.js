@@ -1,4 +1,13 @@
-function calculateDefaultPoints(config) {
+import merge from "lodash/merge";
+import defaultInputs from "./defaults";
+
+function build(existingInputs, overrides) {
+  const inputs = merge(existingInputs, overrides);
+  inputs.mainPoints = _calculateDefaultPoints(inputs);
+  return inputs;
+}
+
+function _calculateDefaultPoints(config) {
   return [
     [0, config.dimensions.height],
     [config.dimensions.width, config.dimensions.height],
@@ -12,5 +21,5 @@ function calculateDefaultPoints(config) {
 }
 
 module.exports = {
-  calculateDefaultPoints
+  build
 };

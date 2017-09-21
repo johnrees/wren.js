@@ -17,7 +17,7 @@ function midpoints(minDistance, a, b) {
   }
 }
 
-function Outputs(inputs) {
+function build(inputs) {
   const sheets = inputs.layers.sheets
     ? SVG.path([
         [0, 0],
@@ -113,4 +113,6 @@ function Outputs(inputs) {
   };
 }
 
-module.exports = Outputs;
+module.exports = {
+  build
+};
