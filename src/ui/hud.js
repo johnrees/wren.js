@@ -32,8 +32,6 @@ function HUD({ inputs, update }) {
     .step(10)
     .onChange(value => update({ dimensions: { roofOffset: value } }));
 
-  dimensionsFolder.open();
-
   const finFolder = gui.addFolder("fin");
   finFolder
     .add(inputs.fin, "width")
@@ -49,7 +47,6 @@ function HUD({ inputs, update }) {
     .max(400)
     .step(5)
     .onChange(value => update({ fin: { grip: { width: value } } }));
-  gripFolder.open();
 
   const materialFolder = gui.addFolder("material");
   materialFolder
@@ -66,6 +63,9 @@ function HUD({ inputs, update }) {
   layersFolder
     .add(inputs.layers, "sheets")
     .onChange(value => update({ layers: { sheets: value } }));
+
+  dimensionsFolder.open();
+  gripFolder.open();
   layersFolder.open();
 }
 

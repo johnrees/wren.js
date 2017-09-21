@@ -1,15 +1,12 @@
 import Wren from "..";
 import HUD from "../ui/hud";
 
-const wren = Wren();
-HUD(wren);
-
-function render() {
+function render(data) {
   console.time("render");
-  document.getElementById("sheets").innerHTML = wren.outputs.sheets;
-  document.getElementById("mainPath").innerHTML = wren.outputs.mainPath;
-  document.getElementById("modules").innerHTML = wren.outputs.modules;
-  document.getElementById("circles").innerHTML = wren.outputs.circles;
+  document.getElementById("sheets").innerHTML = data.outputs.sheets;
+  document.getElementById("mainPath").innerHTML = data.outputs.mainPath;
+  document.getElementById("modules").innerHTML = data.outputs.modules;
+  document.getElementById("circles").innerHTML = data.outputs.circles;
 
   const viewBox = document.getElementById("svg").getBBox();
   document
@@ -20,4 +17,6 @@ function render() {
     );
   console.timeEnd("render");
 }
-render();
+
+const wren = Wren({ dimensions: { roofOffset: 500 } }, render);
+HUD(wren);

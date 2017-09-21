@@ -6,25 +6,23 @@ import Inputs from "./inputs";
 
 Misc.disableConsole(!defaultInputs.DEBUG);
 
-function Wren(inputsOverrides = {}) {
-  const inputs = merge(defaultInputs, inputsOverrides);
-  inputs.mainPoints = Inputs.calculateDefaultPoints(inputs);
+function Wren(inputsOverrides = {}, callback) {
+  let inputs = defaultInputs;
+
+  const update = (inputsOverrides = {}) => {
+    inputs = merge(inputs, inputsOverrides);
+    inputs.mainPoints = Inputs.calculateDefaultPoints(inputs);
+    callback({
+      inputs,
+      outputs: Outputs(inputs)
+    });
+  };
+  update(inputsOverrides);
 
   return {
     inputs,
-    outputs: Outputs(inputs),
-    update: console.log
+    update
   };
 }
-
-// Wren.prototype = {
-//   get inputs() {
-//     return this._inputs
-//   },
-//   set inputs(newInputs) {
-//     this._inputs = merge(defaultInputs, this._inputs, newInputs);
-//     // calculate(this._inputs)
-//   }
-// }
 
 module.exports = Wren;
