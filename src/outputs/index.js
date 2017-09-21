@@ -18,7 +18,6 @@ function midpoints(minDistance, a, b) {
 }
 
 function Outputs(inputs) {
-
   const sheets = inputs.layers.sheets
     ? SVG.path([
         [0, 0],
@@ -29,13 +28,11 @@ function Outputs(inputs) {
     : "";
 
   console.time("clipper");
-  const {
-    main: mainPoints,
-    outer: outerPoints,
-    inner: innerPoints
-  } = Points(inputs.mainPoints, inputs.fin.width)
+  const { main: mainPoints, outer: outerPoints, inner: innerPoints } = Points(
+    inputs.mainPoints,
+    inputs.fin.width
+  );
   console.timeEnd("clipper");
-
 
   console.time("calculations");
   const mainPointPairs = List.loopifyInPairs(mainPoints);
@@ -102,12 +99,10 @@ function Outputs(inputs) {
     })
     .join("");
 
-
   const circles = points.map(groupedPoints =>
     groupedPoints.finPoints.map(pair => SVG.circle(...pair))
   );
   console.timeEnd("calculations");
-
 
   return {
     sheets,
@@ -115,7 +110,7 @@ function Outputs(inputs) {
     mainPath,
     modules,
     circles
-  }
+  };
 }
 
-module.exports = Outputs
+module.exports = Outputs;

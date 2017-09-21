@@ -1,6 +1,6 @@
 import dat from "dat.gui/build/dat.gui";
 
-function HUD({inputs, update}) {
+function HUD({ inputs, update }) {
   const gui = new dat.GUI();
 
   const dimensionsFolder = gui.addFolder("dimensions");
@@ -9,28 +9,28 @@ function HUD({inputs, update}) {
     .min(2500)
     .max(6000)
     .step(5)
-    .onChange(value => update({ dimensions: { height: value }}));
+    .onChange(value => update({ dimensions: { height: value } }));
 
   dimensionsFolder
     .add(inputs.dimensions, "width")
     .min(2000)
     .max(5000)
     .step(5)
-    .onChange(value => update({ dimensions: { width: value }}));
+    .onChange(value => update({ dimensions: { width: value } }));
 
   dimensionsFolder
     .add(inputs.dimensions, "wallHeight")
     .min(1700)
     .max(6000)
     .step(5)
-    .onChange(value => update({ dimensions: { wallHeight: value }}));
+    .onChange(value => update({ dimensions: { wallHeight: value } }));
 
   dimensionsFolder
     .add(inputs.dimensions, "roofOffset")
     .min(-2000)
     .max(2000)
     .step(10)
-    .onChange(value => update({ dimensions: { roofOffset: value }}));
+    .onChange(value => update({ dimensions: { roofOffset: value } }));
 
   dimensionsFolder.open();
 

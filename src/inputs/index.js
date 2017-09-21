@@ -13,4 +13,4 @@ function calculateDefaultPoints(config) {
 
 module.exports = {
   calculateDefaultPoints
-}
+};

@@ -1,7 +1,7 @@
 import Wren from "..";
 import HUD from "../ui/hud";
 
-const wren = Wren()
+const wren = Wren();
 HUD(wren);
 
 function render() {
@@ -20,4 +20,4 @@ function render() {
     );
   console.timeEnd("render");
 }
-render()
+render();

@@ -1,20 +1,20 @@
 import { Misc } from "./utils";
 import merge from "lodash/merge";
 import defaultInputs from "./inputs/defaults";
-import Outputs from "./outputs"
-import Inputs from "./inputs"
+import Outputs from "./outputs";
+import Inputs from "./inputs";
 
 Misc.disableConsole(!defaultInputs.DEBUG);
 
-function Wren(inputsOverrides={}) {
-  const inputs = merge(defaultInputs, inputsOverrides)
+function Wren(inputsOverrides = {}) {
+  const inputs = merge(defaultInputs, inputsOverrides);
   inputs.mainPoints = Inputs.calculateDefaultPoints(inputs);
 
   return {
     inputs,
     outputs: Outputs(inputs),
     update: console.log
-  }
+  };
 }
 
 // Wren.prototype = {
