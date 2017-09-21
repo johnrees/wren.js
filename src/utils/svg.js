@@ -7,7 +7,8 @@ function _makePathFromPoints(points) {
   return `${start}${middle}`;
 }
 
-const label = (text, transforms) => `<text class="label" transform="${transforms}">${text}</text>`
+const label = (text, transforms) =>
+  `<text class="label" transform="${transforms}">${text}</text>`;
 // transform="translate(0 0) rotate(-90)"
 
 const path = (points, attributes = {}) => {
@@ -21,10 +22,10 @@ const path = (points, attributes = {}) => {
   return str + `></path>`;
 };
 
-const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" />`
+const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" />`;
 
 module.exports = {
   path,
   circle,
   label
-}
+};
