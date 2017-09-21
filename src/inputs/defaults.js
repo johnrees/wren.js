@@ -1,10 +1,10 @@
 const config = {
-  DEBUG: false,
+  DEBUG: true,
   dimensions: {
     width: 3900,
     height: 4300,
     roofOffset: 0,
-    wallHeight: 2400,
+    wallHeight: 2400
   },
   fin: {
     frameWidth: 150,
@@ -13,7 +13,7 @@ const config = {
     grip: {
       width: 180,
       holeWidth: 60
-    },
+    }
   },
   material: {
     thickness: 18,
@@ -25,8 +25,8 @@ const config = {
     sheets: false
   },
   svg: {
-    padding: 400,
+    padding: 400
   }
-}
+};
 
-module.exports = config
+module.exports = config;
