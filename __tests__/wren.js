@@ -9,6 +9,6 @@ describe("outputs", () => {
   const wren = Wren()
 
   test("it includes points", () => {
-    expect(Object.keys(wren.outputs)).toEqual(['points', 'areas'])
+    expect(Object.keys(wren.outputs)).toEqual(["sheets", "points", "mainPath", "modules", "circles"])
   });
 })
