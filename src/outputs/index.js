@@ -1,5 +1,6 @@
 import { List, SVG, Point } from "../utils";
 import block from "./block";
+import sheet from "./sheet";
 import Points from "./points";
 
 function midpoints(minDistance, a, b) {
@@ -18,14 +19,14 @@ function midpoints(minDistance, a, b) {
 }
 
 function build(inputs) {
-  const sheets = inputs.layers.sheets
-    ? SVG.path([
-        [0, 0],
-        [0, inputs.material.height],
-        [inputs.material.width, inputs.material.height],
-        [inputs.material.width, 0]
-      ])
-    : "";
+  // const sheets = inputs.layers.sheets
+  //   ? SVG.path([
+  //       [0, 0],
+  //       [0, inputs.material.height],
+  //       [inputs.material.width, inputs.material.height],
+  //       [inputs.material.width, 0]
+  //     ])
+  //   : "";
 
   console.time("clipper");
   const { main: mainPoints, outer: outerPoints, inner: innerPoints } = Points(
@@ -98,6 +99,14 @@ function build(inputs) {
       );
     })
     .join("");
+
+  const sheets = inputs.layers.sheets
+    ? points
+        .map((groupedPoints, armIndex) => {
+          return "<g>" + sheet(groupedPoints) + "</g>";
+        })
+        .join("")
+    : "";
 
   const circles = inputs.layers.circles
     ? points
