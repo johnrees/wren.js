@@ -22,7 +22,8 @@ const config = {
   },
   layers: {
     labels: false,
-    sheets: false
+    sheets: false,
+    circles: false
   },
   svg: {
     padding: 400

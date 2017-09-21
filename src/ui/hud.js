@@ -63,7 +63,9 @@ function HUD({ inputs, update }) {
   layersFolder
     .add(inputs.layers, "sheets")
     .onChange(value => update({ layers: { sheets: value } }));
-
+  layersFolder
+    .add(inputs.layers, "circles")
+    .onChange(value => update({ layers: { circles: value } }));
   dimensionsFolder.open();
   gripFolder.open();
   layersFolder.open();

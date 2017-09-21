@@ -99,9 +99,13 @@ function build(inputs) {
     })
     .join("");
 
-  const circles = points.map(groupedPoints =>
-    groupedPoints.finPoints.map(pair => SVG.circle(...pair))
-  );
+  const circles = inputs.layers.circles
+    ? points
+        .map(groupedPoints =>
+          groupedPoints.finPoints.map(pair => SVG.circle(...pair)).join("")
+        )
+        .join("")
+    : "";
   console.timeEnd("calculations");
 
   return {
