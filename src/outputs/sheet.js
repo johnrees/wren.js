@@ -55,6 +55,20 @@ function _greenpath(points) {
   return SVG.path(points, { stroke: "green" });
 }
 
+function sheetHole(x, y, rotate, opts, inputs) {
+  const holeLength = inputs.fin.grip.width;
+  const holeWidth = inputs.material.thickness;
+  return SVG.path(
+    [
+      [x - holeLength / 2, y + holeWidth / 2],
+      [x + holeLength / 2, y + holeWidth / 2],
+      [x + holeLength / 2, y - holeWidth / 2],
+      [x - holeLength / 2, y - holeWidth / 2]
+    ].map(rotate),
+    opts
+  );
+}
+
 function _circle(point, angle, inputs) {
   const rotate = Point.rotateAroundPoint(point, angle);
 
@@ -62,21 +76,26 @@ function _circle(point, angle, inputs) {
   // const holeOffset = inputs.fin.width / 2;
   // const material = inputs.material;
 
-  const p1 = rotate([point[0], point[1] - inputs.fin.width / 2 - 57]);
-  const p2 = rotate([
+  const p1 = [point[0], point[1] - inputs.fin.width / 2 - 57];
+  const p2 = [
     point[0],
     point[1] - inputs.material.width - inputs.fin.width / 2 + 57
-  ]);
+  ];
+
+  const p3 = [point[0], point[1] + inputs.fin.width / 2 + 57];
+  const p4 = [
+    point[0],
+    point[1] + inputs.material.width + inputs.fin.width / 2 - 57
+  ];
   return (
-    SVG.circle(...p1) + SVG.circle(...p2)
-    // SVG.path(hole(p1[0], p1[1], halfHoleWidth, holeOffset, material).map(rotate))
+    sheetHole(...p1, rotate, { stroke: "red" }, inputs) +
+    sheetHole(...p2, rotate, { stroke: "red" }, inputs) +
+    sheetHole(...p3, rotate, { stroke: "green" }, inputs) +
+    sheetHole(...p4, rotate, { stroke: "green" }, inputs)
   );
 }
 
 function sheet(inputs, pairOfGroupedPoints) {
-  // const sortedPair = pairOfGroupedPoints.sort( (a,b) => {
-  //   return b.points.inner[0] - a.points.inner[0]
-  // })
   return [
     ..._sheet(pairOfGroupedPoints, "outer", -1, inputs.material).map(_redpath),
     ..._sheet(pairOfGroupedPoints, "inner", 1, inputs.material).map(_greenpath),
