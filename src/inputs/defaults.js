@@ -10,6 +10,9 @@ const config = {
     frameWidth: 150,
     pointDistance: 300,
     width: 250,
+    spacer: {
+      width: 78
+    },
     grip: {
       width: 180,
       holeWidth: 60
@@ -23,7 +26,8 @@ const config = {
   },
   layers: {
     labels: false,
-    sheets: true,
+    sheets: false,
+    spacers: true,
     circles: false
   },
   svg: {

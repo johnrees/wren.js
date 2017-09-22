@@ -2,6 +2,7 @@ import { List, SVG, Point } from "../utils";
 import { midpoints, calculatePoints } from "./utils";
 import { block } from "./block";
 import sheet from "./sheet";
+import spacer from "./spacer";
 import Points from "./points";
 
 function build(inputs) {
@@ -71,6 +72,14 @@ function build(inputs) {
         .join("")
     : "";
 
+  const spacers = inputs.layers.spacers
+    ? List.loopifyInPairs(points)
+        .map(pairOfGroupedPoints => {
+          return "<g>" + spacer(inputs, pairOfGroupedPoints) + "</g>";
+        })
+        .join("")
+    : "";
+
   const circles = inputs.layers.circles
     ? points
         .map(groupedPoints =>
@@ -82,6 +91,7 @@ function build(inputs) {
 
   return {
     sheets,
+    spacers,
     points,
     mainPath,
     modules,
