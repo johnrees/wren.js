@@ -19,7 +19,7 @@ const config = {
     thickness: 18,
     height: 2440,
     width: 1220,
-    notchHeight: 0 //18
+    notchHeight: 18 //18
   },
   layers: {
     labels: false,

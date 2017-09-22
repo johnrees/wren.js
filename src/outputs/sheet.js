@@ -21,17 +21,24 @@ function _sheet(
   const end = pair[1].points[pos];
   const totalLength = Point.length(start, end);
 
+  let sortedStart = start;
+  let d = 1;
+  if (start[1] < end[1]) {
+    sortedStart = end;
+    d = -1;
+  }
+
   let arr = [];
   const numSheets = Math.ceil(totalLength / maxSheetHeight);
   for (let i = 0; i < numSheets; i++) {
     const length = Math.min(totalLength - maxSheetHeight * i, maxSheetHeight); // - 18
-    const rotate = Point.rotateAroundPoint(start, angle);
-    const [x, y] = start;
+    const rotate = Point.rotateAroundPoint(sortedStart, angle);
+    const [x, y] = sortedStart;
     arr.push(
       oneSheet(
-        [x + maxSheetHeight * i - notchHeight * i, y],
+        [x + (maxSheetHeight * i - notchHeight * i) * d, y],
         width,
-        length,
+        (length + notchHeight * i) * d,
         dir
       ).map(rotate)
     );
