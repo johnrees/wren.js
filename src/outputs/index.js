@@ -1,5 +1,5 @@
 import { List, SVG, Point } from "../utils";
-import block from "./block";
+import { block } from "./block";
 import sheet from "./sheet";
 import Points from "./points";
 

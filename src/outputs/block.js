@@ -1,5 +1,15 @@
 import { Point, SVG } from "../utils";
 
+const hole = (x, y, halfHoleWidth, holeOffset, { thickness }) => {
+  return [
+    [x - halfHoleWidth, y + holeOffset],
+    [x + halfHoleWidth, y + holeOffset],
+    [x + halfHoleWidth, y + holeOffset - thickness],
+    [x - halfHoleWidth, y + holeOffset - thickness],
+    [x - halfHoleWidth, y + holeOffset]
+  ];
+};
+
 const block = (config, groupedPoints, index, previousArm) => (x, y) => {
   const { angle, points } = groupedPoints;
   const { inner, outer } = points;
@@ -71,13 +81,7 @@ const block = (config, groupedPoints, index, previousArm) => (x, y) => {
   } else {
     const holes =
       SVG.path(
-        [
-          [x - halfHoleWidth, y + holeOffset],
-          [x + halfHoleWidth, y + holeOffset],
-          [x + halfHoleWidth, y + holeOffset - config.material.thickness],
-          [x - halfHoleWidth, y + holeOffset - config.material.thickness],
-          [x - halfHoleWidth, y + holeOffset]
-        ].map(rotate)
+        hole(x, y, halfHoleWidth, holeOffset, config.material).map(rotate)
       ) +
       SVG.path(
         [
@@ -159,4 +163,7 @@ const block = (config, groupedPoints, index, previousArm) => (x, y) => {
   }
 };
 
-module.exports = block;
+module.exports = {
+  block,
+  hole
+};
