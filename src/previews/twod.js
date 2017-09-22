@@ -7,6 +7,7 @@ function render(data) {
   document.getElementById("mainPath").innerHTML = data.outputs.mainPath;
   document.getElementById("modules").innerHTML = data.outputs.modules;
   document.getElementById("circles").innerHTML = data.outputs.circles;
+  document.getElementById("spacers").innerHTML = data.outputs.spacers;
 
   const viewBox = document.getElementById("svg").getBBox();
   document
