@@ -10,24 +10,32 @@ function oneSheet([x, y], width, length, dir) {
   ];
 }
 
-function _sheet(pair, pos, dir, { width, height: maxSheetHeight }) {
+function _sheet(
+  pair,
+  pos,
+  dir,
+  { notchHeight, width, height: maxSheetHeight }
+) {
+  const angle = pair[0].angle;
   const start = pair[0].points[pos];
   const end = pair[1].points[pos];
   const totalLength = Point.length(start, end);
 
   let arr = [];
   const numSheets = Math.ceil(totalLength / maxSheetHeight);
-
   for (let i = 0; i < numSheets; i++) {
-    // const length = Math.min(totalLength, maxSheetHeight);
-    const length = totalLength - maxSheetHeight * i; // - 18
-    const rotate = Point.rotateAroundPoint(start, pair[0].angle);
+    const length = Math.min(totalLength - maxSheetHeight * i, maxSheetHeight); // - 18
+    const rotate = Point.rotateAroundPoint(start, angle);
     const [x, y] = start;
     arr.push(
-      oneSheet([x + maxSheetHeight * i, y], width, length, dir).map(rotate)
+      oneSheet(
+        [x + maxSheetHeight * i - notchHeight * i, y],
+        width,
+        length,
+        dir
+      ).map(rotate)
     );
   }
-
   return arr;
 }
 
