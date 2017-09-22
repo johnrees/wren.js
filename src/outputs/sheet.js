@@ -10,15 +10,25 @@ function oneSheet([x, y], width, length, dir) {
   ];
 }
 
-function _sheet(pair, pos, dir, { width, height }) {
+function _sheet(pair, pos, dir, { width, height: maxSheetHeight }) {
   const start = pair[0].points[pos];
   const end = pair[1].points[pos];
-  const distance = Point.length(start, end);
-  const length = Math.min(distance, height);
+  const totalLength = Point.length(start, end);
 
-  const rotate = Point.rotateAroundPoint(start, pair[0].angle);
+  let arr = [];
+  const numSheets = Math.ceil(totalLength / maxSheetHeight);
 
-  return [oneSheet(start, width, length, dir).map(rotate)];
+  for (let i = 0; i < numSheets; i++) {
+    // const length = Math.min(totalLength, maxSheetHeight);
+    const length = totalLength - maxSheetHeight * i; // - 18
+    const rotate = Point.rotateAroundPoint(start, pair[0].angle);
+    const [x, y] = start;
+    arr.push(
+      oneSheet([x + maxSheetHeight * i, y], width, length, dir).map(rotate)
+    );
+  }
+
+  return arr;
 }
 
 function _redpath(points) {

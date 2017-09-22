@@ -22,7 +22,7 @@ const config = {
   },
   layers: {
     labels: false,
-    sheets: false,
+    sheets: true,
     circles: false
   },
   svg: {
