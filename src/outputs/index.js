@@ -101,9 +101,9 @@ function build(inputs) {
     .join("");
 
   const sheets = inputs.layers.sheets
-    ? points
-        .map((groupedPoints, armIndex) => {
-          return "<g>" + sheet(groupedPoints) + "</g>";
+    ? List.loopifyInPairs(points)
+        .map(pairOfGroupedPoints => {
+          return "<g>" + sheet(inputs, pairOfGroupedPoints) + "</g>";
         })
         .join("")
     : "";
