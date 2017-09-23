@@ -1,4 +1,4 @@
-import { Point } from "../utils"
+import { Point } from "../utils";
 
 function hole(x, y, halfHoleWidth, holeOffset, { thickness }) {
   return [
@@ -8,7 +8,7 @@ function hole(x, y, halfHoleWidth, holeOffset, { thickness }) {
     [x - halfHoleWidth, y + holeOffset - thickness],
     [x - halfHoleWidth, y + holeOffset]
   ];
-};
+}
 
 function midpoints(minDistance, a, b) {
   const lastIndex = a.length - 1;
@@ -25,8 +25,7 @@ function midpoints(minDistance, a, b) {
   }
 }
 
-
 module.exports = {
   hole,
   midpoints
-}
+};
