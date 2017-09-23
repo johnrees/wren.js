@@ -1,5 +1,5 @@
 import { List, SVG, Point } from "../utils";
-import { midpoints } from "./utils";
+import { midpoints, calculatePoints } from "./utils";
 import { block } from "./block";
 import sheet from "./sheet";
 import Points from "./points";
@@ -14,32 +14,18 @@ function build(inputs) {
 
   console.time("calculations");
   const mainPointPairs = List.loopifyInPairs(mainPoints);
-  const lineLengths = mainPointPairs.map(pair => Point.length(...pair));
 
   const points = mainPointPairs.reduce((arr, pair, index) => {
     const midpoint = Point.midpoint(...pair);
     const distance = Point.length(...pair);
-    const halfDistance = distance / 2;
-
-    function calculatePoints(halfPair) {
-      let pts = [];
-      for (
-        let i = inputs.fin.pointDistance;
-        i < halfDistance;
-        i += inputs.fin.pointDistance
-      ) {
-        pts.push(Point.pointOnLine(i, halfDistance)(...halfPair));
-      }
-      return pts;
-    }
 
     let finPoints = [];
     finPoints.push(
       pair[0],
       ...midpoints(
         inputs.fin.pointDistance * 0.75,
-        calculatePoints([pair[0], midpoint]),
-        calculatePoints([pair[1], midpoint]).reverse()
+        calculatePoints(inputs, distance, [pair[0], midpoint]),
+        calculatePoints(inputs, distance, [pair[1], midpoint]).reverse()
       )
     );
 

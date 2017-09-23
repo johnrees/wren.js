@@ -25,7 +25,21 @@ function midpoints(minDistance, a, b) {
   }
 }
 
+function calculatePoints(inputs, distance, halfPair) {
+  const halfDistance = distance / 2;
+  let pts = [];
+  for (
+    let i = inputs.fin.pointDistance;
+    i < halfDistance;
+    i += inputs.fin.pointDistance
+  ) {
+    pts.push(Point.pointOnLine(i, halfDistance)(...halfPair));
+  }
+  return pts;
+}
+
 module.exports = {
   hole,
-  midpoints
+  midpoints,
+  calculatePoints
 };
