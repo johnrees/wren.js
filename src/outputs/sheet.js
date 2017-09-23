@@ -47,8 +47,8 @@ function _sheet(
   return arr;
 }
 
-const _redpath = points => SVG.path(points, { stroke: "red" })
-const _greenpath = points => SVG.path(points, { stroke: "green" })
+const _redpath = points => SVG.path(points, { stroke: "red" });
+const _greenpath = points => SVG.path(points, { stroke: "green" });
 
 function sheetHole(x, y, rotate, opts, inputs) {
   const holeLength = inputs.fin.grip.width;
