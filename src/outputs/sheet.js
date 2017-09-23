@@ -1,5 +1,5 @@
 import { Point, SVG } from "../utils";
-import { hole } from "./block";
+import { hole } from "./utils";
 
 function oneSheet([x, y], width, length, dir) {
   // const newY = y; // + (x < 0 ? -1200 : 1200)

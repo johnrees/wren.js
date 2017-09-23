@@ -1,14 +1,5 @@
 import { Point, SVG } from "../utils";
-
-const hole = (x, y, halfHoleWidth, holeOffset, { thickness }) => {
-  return [
-    [x - halfHoleWidth, y + holeOffset],
-    [x + halfHoleWidth, y + holeOffset],
-    [x + halfHoleWidth, y + holeOffset - thickness],
-    [x - halfHoleWidth, y + holeOffset - thickness],
-    [x - halfHoleWidth, y + holeOffset]
-  ];
-};
+import { hole } from "./utils";
 
 const block = (config, groupedPoints, index, previousArm) => (x, y) => {
   const { angle, points } = groupedPoints;
@@ -164,6 +155,5 @@ const block = (config, groupedPoints, index, previousArm) => (x, y) => {
 };
 
 module.exports = {
-  block,
-  hole
+  block
 };

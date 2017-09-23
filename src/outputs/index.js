@@ -1,33 +1,10 @@
 import { List, SVG, Point } from "../utils";
+import { midpoints } from "./utils";
 import { block } from "./block";
 import sheet from "./sheet";
 import Points from "./points";
 
-function midpoints(minDistance, a, b) {
-  const lastIndex = a.length - 1;
-  const midpointDistance = Point.length(a[lastIndex], b[0]);
-  if (midpointDistance <= minDistance) {
-    return [
-      ...a.slice(0, lastIndex),
-      ...b
-      // Point.midpoint(a[lastIndex], b[0]),
-      // ...b.slice(1)
-    ];
-  } else {
-    return [...a, ...b];
-  }
-}
-
 function build(inputs) {
-  // const sheets = inputs.layers.sheets
-  //   ? SVG.path([
-  //       [0, 0],
-  //       [0, inputs.material.height],
-  //       [inputs.material.width, inputs.material.height],
-  //       [inputs.material.width, 0]
-  //     ])
-  //   : "";
-
   console.time("clipper");
   const { main: mainPoints, outer: outerPoints, inner: innerPoints } = Points(
     inputs.mainPoints,
