@@ -35,13 +35,12 @@ const angle = (start, end) => {
 
 const rad2deg = rads => rads / Math.PI * 180;
 
-const midpoint = percentageOnLine(0.5);
-
 module.exports = {
+  distance: length,
   length,
   angle,
   pointOnLine,
-  midpoint,
+  midpoint: percentageOnLine(0.5),
   rotateAroundPoint,
   rad2deg
 };
