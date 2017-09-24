@@ -1,20 +1,36 @@
 const _getXY = (start, end) => [end[0] - start[0], end[1] - start[1]];
 
+/**
+ * Calculates the distance between two points
+ * @returns {Number}
+ */
 const length = (start, end) => {
   const [x, y] = _getXY(start, end);
   return Math.hypot(x, y);
 };
 
+/**
+ * Returns a point at a given distance on a line
+ * @returns {Array}
+ */
 const pointOnLine = (distance, length) => (start, end) => {
   const [x, y] = _getXY(start, end);
   return [start[0] + x / length * distance, start[1] + y / length * distance];
 };
 
+/**
+ * Returns a point at a percentage distance between two points
+ * @returns {Array}
+ */
 const percentageOnLine = (percentage = 0.5) => (start, end) => {
   const [x, y] = _getXY(start, end);
   return [start[0] + x * percentage, start[1] + y * percentage];
 };
 
+/**
+ * Rotates a point rotated around a given axis point (in radians)
+ * @returns {Array}
+ */
 const rotateAroundPoint = ([originX, originY], angle = 0) => (
   [pointX, pointY]
 ) => {
@@ -28,11 +44,19 @@ const rotateAroundPoint = ([originX, originY], angle = 0) => (
   ];
 };
 
+/**
+ * Calculates the angle (in radians) of a line drawn between two points
+ * @returns {Number}
+ */
 const angle = (start, end) => {
   const [x, y] = _getXY(start, end);
   return Math.atan2(y, x);
 };
 
+/**
+ * Converts radians into degrees of rotation
+ * @returns {Number}
+ */
 const rad2deg = rads => rads / Math.PI * 180;
 
 module.exports = {
