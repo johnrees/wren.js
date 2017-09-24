@@ -22,7 +22,24 @@ const path = (points, attributes = {}) => {
   return str + `></path>`;
 };
 
-const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" />`;
+// const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" />`;
+
+const circle = (x, y, extraAttrs = {}) => {
+  const attrs = {
+    cx: x,
+    cy: y,
+    r: 30
+  };
+  const attributes = Object.assign(attrs, extraAttrs);
+
+  let circle = "<circle ";
+  for (var key in attributes) {
+    const val = attributes[key].toString();
+    circle += ` ${key}="${val}"`;
+  }
+
+  return circle + "/>";
+};
 
 module.exports = {
   path,

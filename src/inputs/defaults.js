@@ -28,7 +28,8 @@ const config = {
     labels: false,
     sheets: false,
     spacers: true,
-    circles: false
+    circles: false,
+    paths: true
   },
   svg: {
     padding: 400

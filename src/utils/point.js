@@ -9,6 +9,10 @@ const length = (start, end) => {
   return Math.hypot(x, y);
 };
 
+const translate = (point, moveTo) => {
+  return [point[0] + moveTo[0], point[1] + moveTo[1]];
+};
+
 /**
  * Returns a point at a given distance on a line
  * @returns {Array}
@@ -66,5 +70,6 @@ module.exports = {
   pointOnLine,
   midpoint: percentageOnLine(0.5),
   rotateAroundPoint,
-  rad2deg
+  rad2deg,
+  translate
 };
