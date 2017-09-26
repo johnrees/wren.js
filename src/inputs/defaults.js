@@ -35,7 +35,7 @@ const config = {
   layers: {
     labels: false,
     sheets: true,
-    circles: false
+    circles: true
   },
   svg: {
     padding: 400

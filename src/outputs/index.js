@@ -49,6 +49,7 @@ function build(inputs) {
   const safeIndex = List.safeIndex(points.length);
 
   const modules = points
+    .slice(3)
     .map((groupedPoints, armIndex) => {
       const previousArm = points[safeIndex(armIndex - 1)];
       return (

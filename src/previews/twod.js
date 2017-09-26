@@ -3,7 +3,7 @@ import HUD from "../ui/hud";
 
 function render(data) {
   console.time("render");
-  document.getElementById("sheets").innerHTML = data.outputs.sheets;
+  // document.getElementById("sheets").innerHTML = data.outputs.sheets;
   document.getElementById("mainPath").innerHTML = data.outputs.mainPath;
   document.getElementById("modules").innerHTML = data.outputs.modules;
   document.getElementById("circles").innerHTML = data.outputs.circles;
