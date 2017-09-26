@@ -6,6 +6,17 @@ const config = {
     roofOffset: 0,
     wallHeight: 2400
   },
+  sheet: {
+    crenellations: {
+      merlon: {
+        width: 80,
+        height: 65
+      },
+      crenel: {
+        width: 120
+      }
+    }
+  },
   fin: {
     frameWidth: 150,
     pointDistance: 300,
