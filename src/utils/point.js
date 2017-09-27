@@ -18,6 +18,13 @@ const pointOnLine = (distance, length) => (start, end) => {
   return [start[0] + x / length * distance, start[1] + y / length * distance];
 };
 
+const subject = [[0, 0], [0, 100], [-100, 0]];
+const result = [[-100, 0], [100, 0], [0, 100]];
+
+const yMirror = points => {
+  return [...points, ...points.map(([x, y]) => [-x, y]).reverse()];
+};
+
 /**
  * Returns a point at a percentage distance between two points
  * @returns {Array}
@@ -66,5 +73,6 @@ module.exports = {
   pointOnLine,
   midpoint: percentageOnLine(0.5),
   rotateAroundPoint,
-  rad2deg
+  rad2deg,
+  yMirror
 };
