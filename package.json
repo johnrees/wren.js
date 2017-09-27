@@ -29,7 +29,8 @@
   "dependencies": {
     "clipper-lib": "^6.2.1",
     "dat.gui": "https://github.com/dataarts/dat.gui",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "snabbdom": "^0.7.0"
   },
   "jest": {
     "testEnvironment": "node"

@@ -7,7 +7,8 @@ module.exports = {
   entry: {
     // wren: ['babel-polyfill', './index.js'],
     wren: './index.js',
-    twod: './previews/twod.js'
+    twod: './previews/twod.js',
+    dom: './previews/dom.js'
   },
   output: {
     filename: '[name].bundle.js',
