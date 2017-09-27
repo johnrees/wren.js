@@ -49,9 +49,21 @@ const svg = input =>
 
 const htmlSVG = _fp.flow(svg, toHTML);
 
-const connector = _fp.flow(
-  Geometry.connector,
-  connectPoints,
-  htmlSVG,
-  console.log
-)({ width: 300 });
+// const connector = _fp.flow(
+//   Geometry.connector,
+//   connectPoints,
+//   htmlSVG,
+//   console.log
+// )({ width: 300 });
+
+const connectGeometry = geometry =>
+  Object.assign({}, geometry, {
+    outlineGeometry: connectPoints(geometry.outline)
+  });
+
+const ht = geometry => _fp.flow(svg, toHTML)(geometry.outlineGeometry);
+
+const wall = _fp.flow(Geometry.wall, connectGeometry, ht, console.log)({
+  height: 2400,
+  width: 2000
+});

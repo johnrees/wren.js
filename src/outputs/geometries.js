@@ -23,6 +23,26 @@ const halfConnector = dimensions => {
   ];
 };
 
+const halfWall = dimensions => {
+  const { width = 2000, height = 2000 } = dimensions;
+  const halfWidth = width / 2;
+
+  return {
+    outline: [[halfWidth, 0], [halfWidth, height]],
+    holes: [],
+    labels: []
+  };
+};
+
+const mirrorGeometry = geometry => {
+  return {
+    outline: Point.yMirror(geometry.outline),
+    holes: geometry.holes,
+    labels: geometry.labels
+  };
+};
+
 module.exports = {
-  connector: _fp.flow(halfConnector, Point.yMirror)
+  connector: _fp.flow(halfConnector, Point.yMirror),
+  wall: _fp.flow(halfWall, mirrorGeometry)
 };
