@@ -40,8 +40,24 @@ const makeSVG = input =>
 const doPatch = vnode => patch(container, vnode);
 
 // prettier-ignore
-const spaceInvader = _fp.flow(
-  Geometry.spaceInvader,
+// const spaceInvader = _fp.flow(
+//   Geometry.spaceInvader,
+//   connectPoints,
+//   makeSVG,
+//   doPatch
+// )({});
+
+// prettier-ignore
+// const connector = _fp.flow(
+//   Geometry.connector,
+//   connectPoints,
+//   makeSVG,
+//   doPatch
+// )({});
+
+// prettier-ignore
+const fin = _fp.flow(
+  Geometry.fin,
   connectPoints,
   makeSVG,
   doPatch

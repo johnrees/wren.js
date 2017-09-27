@@ -4,7 +4,7 @@ function makePathFromPoints(points) {
     .slice(1)
     .map(point => `${point}`)
     .join(" ");
-  return `${start}${middle}`;
+  return `${start}${middle}z`;
 }
 
 const label = (text, transforms) =>
