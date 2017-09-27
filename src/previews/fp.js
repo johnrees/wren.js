@@ -56,14 +56,27 @@ const htmlSVG = _fp.flow(svg, toHTML);
 //   console.log
 // )({ width: 300 });
 
-const connectGeometry = geometry =>
-  Object.assign({}, geometry, {
-    outlineGeometry: connectPoints(geometry.outline)
-  });
+// prettier-ignore
+const spaceInvader = _fp.flow(
+  Geometry.spaceInvader,
+  connectPoints,
+  htmlSVG,
+  console.log
+)({});
 
-const ht = geometry => _fp.flow(svg, toHTML)(geometry.outlineGeometry);
+// const connectGeometry = geometry =>
+//   Object.assign({}, geometry, {
+//     outlineGeometry: connectPoints(geometry.outline)
+//   });
 
-const wall = _fp.flow(Geometry.wall, connectGeometry, ht, console.log)({
-  height: 2400,
-  width: 2000
-});
+// const ht = geometry => _fp.flow(svg, toHTML)(geometry.outlineGeometry);
+
+// const wall = _fp.flow(
+//   Geometry.wall,
+//   connectPoints,
+//   htmlSVG,
+//   console.log
+// )({
+//   height: 4000,
+//   width: 2000
+// });

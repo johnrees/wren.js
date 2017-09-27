@@ -25,6 +25,10 @@ const yMirror = points => {
   return [...points, ...points.map(([x, y]) => [-x, y]).reverse()];
 };
 
+const xMirror = points => {
+  return [...points, ...points.map(([x, y]) => [x, -y]).reverse()];
+};
+
 /**
  * Returns a point at a percentage distance between two points
  * @returns {Array}
@@ -74,5 +78,6 @@ module.exports = {
   midpoint: percentageOnLine(0.5),
   rotateAroundPoint,
   rad2deg,
-  yMirror
+  yMirror,
+  xMirror
 };

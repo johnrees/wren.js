@@ -24,25 +24,43 @@ const halfConnector = dimensions => {
 };
 
 const halfWall = dimensions => {
-  const { width = 2000, height = 2000 } = dimensions;
+  const { width = 2000, height = 2000, maxHeight = 2200 } = dimensions;
+
   const halfWidth = width / 2;
 
-  return {
-    outline: [[halfWidth, 0], [halfWidth, height]],
-    holes: [],
-    labels: []
-  };
+  return [[[halfWidth, 0], [halfWidth, height]]];
 };
 
-const mirrorGeometry = geometry => {
-  return {
-    outline: Point.yMirror(geometry.outline),
-    holes: geometry.holes,
-    labels: geometry.labels
-  };
+const quarterSpaceInvader = dimensions => {
+  const { width = 114, height = 286, materialThickness = 18 } = dimensions;
+  const halfWidth = width / 2;
+  const halfHeight = height / 2;
+
+  return [
+    [0, materialThickness * 2 - halfHeight],
+    [26, materialThickness * 2 - halfHeight],
+    [26, -halfHeight],
+    [halfWidth, -halfHeight],
+    [halfWidth, materialThickness - halfHeight],
+    [halfWidth + materialThickness, materialThickness - halfHeight],
+    [halfWidth + materialThickness, materialThickness * 2 - halfHeight],
+    [halfWidth, materialThickness * 2 - halfHeight],
+    [halfWidth, materialThickness],
+    [halfWidth + materialThickness, materialThickness],
+    [halfWidth + materialThickness, 0]
+  ];
 };
+
+// const mirrorGeometry = geometry => {
+//   return {
+//     outline: Point.yMirror(geometry.outline),
+//     holes: geometry.holes,
+//     labels: geometry.labels
+//   };
+// };
 
 module.exports = {
   connector: _fp.flow(halfConnector, Point.yMirror),
-  wall: _fp.flow(halfWall, mirrorGeometry)
+  wall: _fp.flow(halfWall, Point.yMirror),
+  spaceInvader: _fp.flow(quarterSpaceInvader, Point.yMirror, Point.xMirror)
 };
