@@ -8,7 +8,8 @@ module.exports = {
     // wren: ['babel-polyfill', './index.js'],
     wren: './index.js',
     twod: './previews/twod.js',
-    dom: './previews/dom.js'
+    dom: './previews/dom.js',
+    dev: './previews/dev.js'
   },
   output: {
     filename: '[name].bundle.js',
