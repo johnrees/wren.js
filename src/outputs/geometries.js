@@ -24,15 +24,24 @@ const halfConnector = dimensions => {
 };
 
 const halfWall = dimensions => {
-  const { width = 2000, height = 2000, maxHeight = 2200 } = dimensions;
-
+  // prettier-ignore
+  const {
+    width = 2000,
+    height = 2000,
+    maxHeight = 2200
+  } = dimensions;
   const halfWidth = width / 2;
 
   return [[[halfWidth, 0], [halfWidth, height]]];
 };
 
 const quarterSpaceInvader = dimensions => {
-  const { width = 114, height = 286, materialThickness = 18 } = dimensions;
+  // prettier-ignore
+  const {
+    width = 114,
+    height = 286,
+    materialThickness = 18
+  } = dimensions;
   const halfWidth = width / 2;
   const halfHeight = height / 2;
 
@@ -50,14 +59,6 @@ const quarterSpaceInvader = dimensions => {
     [halfWidth + materialThickness, 0]
   ];
 };
-
-// const mirrorGeometry = geometry => {
-//   return {
-//     outline: Point.yMirror(geometry.outline),
-//     holes: geometry.holes,
-//     labels: geometry.labels
-//   };
-// };
 
 module.exports = {
   connector: _fp.flow(halfConnector, Point.yMirror),
