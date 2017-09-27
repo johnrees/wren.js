@@ -1,4 +1,4 @@
-function _makePathFromPoints(points) {
+function makePathFromPoints(points) {
   const start = `M${points[0]} L`;
   const middle = points
     .slice(1)
@@ -12,7 +12,7 @@ const label = (text, transforms) =>
 // transform="translate(0 0) rotate(-90)"
 
 const path = (points, attributes = {}) => {
-  var str = `<path d="${_makePathFromPoints(points)}"`;
+  var str = `<path d="${makePathFromPoints(points)}"`;
 
   for (var key in attributes) {
     var val = attributes[key].toString();
@@ -27,5 +27,6 @@ const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" />`;
 module.exports = {
   path,
   circle,
-  label
+  label,
+  makePathFromPoints
 };
