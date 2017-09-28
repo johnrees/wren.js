@@ -8,7 +8,13 @@ const timeEnd = name => _ => {
   return _;
 };
 
+const log = _ => {
+  console.log(_);
+  return _;
+};
+
 module.exports = {
   timeStart,
-  timeEnd
+  timeEnd,
+  log
 };

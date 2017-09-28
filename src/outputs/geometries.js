@@ -95,10 +95,14 @@ function calculatePoints(inputs, distance, halfPair) {
   return pts;
 }
 
+// const addModules = points => {
+//   const angle = Point.angle(points[0], points[1])
+// }
+
 const fin = _fp.flow(
   finMainPoints,
   List.loopifyInPairs,
-  _fp.flatMap(Frame.calculateFrameEdgePoints)
+  _fp.map(Frame.calculateFrameEdgePoints)
 );
 
 const reinforcer = points => {

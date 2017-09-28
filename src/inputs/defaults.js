@@ -2,8 +2,8 @@ const config = {
   DEBUG: true,
   dimensions: {
     width: 3900,
-    height: 4300,
-    roofOffset: -300,
+    height: 4200,
+    roofOffset: 0,
     wallHeight: 2400
   },
   sheet: {

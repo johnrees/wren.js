@@ -3,7 +3,7 @@ import { Point } from "../utils";
 function _calculate1DFrameEdgePoints(distance, overrides = null) {
   const defaults = {
     spacing: 300,
-    minDistance: 150
+    minDistance: 300
   };
   const config = overrides ? Object.assign(defaults, overrides) : defaults;
 
@@ -20,7 +20,7 @@ function _calculate1DFrameEdgePoints(distance, overrides = null) {
       point = distance - (times - i) * config.spacing;
       // if the two points are too close together then 'remove' both of them
       // and replace them with a new point that is equidistant between them
-      if (point - result[i - 1] <= config.minDistance) {
+      if (point - result[i - 1] < config.minDistance) {
         result[i - 1] += (point - result[i - 1]) / 2;
         continue;
       }
