@@ -13,6 +13,9 @@ const container = document.getElementById("svg-container");
 const connectPoints = points =>
   h("path", { attrs: { d: SVG.makePathFromPoints(points) } });
 
+// const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" />`;
+const debugPoints = points => points.map( ([cx, cy]) => h("circle", { attrs: { cx, cy, r: 100, fill: 'black' } }));
+
 const makeSVG = input =>
   h(
     "svg",
@@ -42,7 +45,7 @@ const doPatch = vnode => patch(container, vnode);
 // prettier-ignore
 const fin = _fp.flow(
   Geometry.fin,
-  connectPoints,
+  debugPoints,
   makeSVG,
   doPatch
 )({});
