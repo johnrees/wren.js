@@ -1,7 +1,6 @@
 var _fp = require("lodash/fp");
-const SVG = require("../utils/svg");
-const List = require("../utils/list");
-const Point = require("../utils/point");
+
+const { SVG, List, Point } = require("../utils")
 const Geometry = require("../outputs/geometries");
 
 const snabbdom = require("snabbdom");
@@ -13,8 +12,10 @@ const container = document.getElementById("svg-container");
 const connectPoints = points =>
   h("path", { attrs: { d: SVG.makePathFromPoints(points) } });
 
-// const circle = (x, y) => `<circle cx="${x}" cy="${y}" r="30" />`;
-const debugPoints = points => points.map( ([cx, cy]) => h("circle", { attrs: { cx, cy, r: 100, fill: 'black' } }));
+const debugPoints = points =>
+  points.map(([cx, cy]) =>
+    h("circle", { attrs: { cx, cy, r: 100, fill: "black" } })
+  );
 
 const makeSVG = input =>
   h(
