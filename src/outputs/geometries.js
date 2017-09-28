@@ -1,4 +1,5 @@
-const Point = require("../utils/point");
+const Frame = require("./frame");
+const { Point, List } = require("../utils");
 const _fp = require("lodash/fp");
 import { build } from "../inputs";
 import defaultInputs from "../inputs/defaults";
@@ -62,14 +63,52 @@ const quarterSpaceInvader = dimensions => {
   ];
 };
 
-const fin = dimensions => {
+const finMainPoints = dimensions => {
   let inputs = defaultInputs;
   return build(defaultInputs).mainPoints;
+};
+
+function midpoints(minDistance, a, b) {
+  const lastIndex = a.length - 1;
+  const midpointDistance = Point.length(a[lastIndex], b[0]);
+  if (midpointDistance <= minDistance) {
+    return [
+      ...a.slice(0, lastIndex),
+      ...b
+      // Point.midpoint(a[lastIndex], b[0]),
+      // ...b.slice(1)
+    ];
+  } else {
+    return [...a, ...b];
+  }
+}
+function calculatePoints(inputs, distance, halfPair) {
+  const halfDistance = distance / 2;
+  let pts = [];
+  for (
+    let i = inputs.fin.pointDistance;
+    i < halfDistance;
+    i += inputs.fin.pointDistance
+  ) {
+    pts.push(Point.pointOnLine(i, halfDistance)(...halfPair));
+  }
+  return pts;
+}
+
+const fin = _fp.flow(
+  finMainPoints,
+  List.loopifyInPairs,
+  _fp.flatMap(Frame.calculateFrameEdgePoints)
+);
+
+const reinforcer = points => {
+  return points;
 };
 
 module.exports = {
   connector: _fp.flow(halfConnector, Point.yMirror),
   wall: _fp.flow(halfWall, Point.yMirror),
   spaceInvader: _fp.flow(quarterSpaceInvader, Point.yMirror, Point.xMirror),
-  fin
+  fin,
+  reinforcer
 };

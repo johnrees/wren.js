@@ -1,6 +1,6 @@
 var _fp = require("lodash/fp");
 
-const { SVG, List, Point } = require("../utils")
+const { SVG, List, Point, Debug } = require("../utils");
 const Geometry = require("../outputs/geometries");
 
 const snabbdom = require("snabbdom");
@@ -14,7 +14,7 @@ const connectPoints = points =>
 
 const debugPoints = points =>
   points.map(([cx, cy]) =>
-    h("circle", { attrs: { cx, cy, r: 100, fill: "black" } })
+    h("circle", { attrs: { cx, cy, r: 10, fill: "black" } })
   );
 
 const makeSVG = input =>
@@ -45,8 +45,25 @@ const doPatch = vnode => patch(container, vnode);
 
 // prettier-ignore
 const fin = _fp.flow(
+  Debug.timeStart('calc fin'),
   Geometry.fin,
+  // List.loopifyInPairs,
+  // console.log
   debugPoints,
+  Debug.timeEnd('calc fin'),
   makeSVG,
-  doPatch
+  doPatch,
 )({});
+
+// prettier-ignore
+// const reinforcer = _fp.flow(
+//   Geometry.reinforcer,
+//   console.log
+//   // debugPoints,
+//   // makeSVG,
+//   // doPatch
+// )([
+//   [-100,0],
+//   [0,100],
+//   [100,0]
+// ]);
