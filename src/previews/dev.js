@@ -38,7 +38,9 @@ const makeSVG = input =>
         }
       }
     },
-    input
+    Object.keys(input).map(key => {
+      return h("g", { attrs: { name: key } }, input[key]);
+    })
   );
 
 const doPatch = vnode => patch(container, vnode);
@@ -53,19 +55,31 @@ const attachModulesToFinEdgePoints = points => {
   return result[0].concat(result[1]);
 };
 
-// prettier-ignore
 const calculateFinPoints = _fp.flow(
-  Debug.timeStart('calc fin'),
+  Debug.timeStart("calculate fin points"),
   Geometry.fin,
-  Debug.timeEnd('calc fin')
-)
+  Debug.timeEnd("calculate fin points")
+);
+
+// prettier-ignore
+const circles = _fp.flow(
+  _fp.flatMap(debugPoints)
+);
 
 const modules = _fp.flow(
-  calculateFinPoints,
   Debug.timeStart("modules"),
   _fp.map(attachModulesToFinEdgePoints),
   Debug.timeEnd("modules"),
-  _fp.map(connectPoints),
+  _fp.map(connectPoints)
+);
+
+const finPoints = calculateFinPoints();
+
+// prettier-ignore
+const draw = _fp.flow(
   makeSVG,
   doPatch
-)();
+)({
+  circles: circles(finPoints),
+  modules: modules(finPoints)
+});
