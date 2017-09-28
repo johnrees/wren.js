@@ -109,10 +109,66 @@ const reinforcer = points => {
   return points;
 };
 
+// prettier-ignore
+const finModule = (x,y,angle,index,i,length) => {
+  const rotate = Point.rotateAroundPoint([x,y],angle)
+  let points = []
+  if (index === 0) {
+    if (i === 0) {
+      points.push(...[
+        [17, 250],
+        [17, 200],
+        [-85, 200],
+        [-85, 150],
+        [17, 150],
+        [17, 100],
+        [-85, 100],
+        [-85, 50],
+        [17, 50],
+        [17, 0],
+      ])
+    }
+    points.push(...[
+      // [0,0],
+        [60,0],
+        [60,-18],
+        [240,-18],
+        [240,0],
+      // [300,0]
+    ])
+  } else {
+    if (i === length-1) {
+      points.push(...[
+        [403, 0],
+        [403, 50],
+        [286, 50],
+        [286, 100],
+        [403, 100],
+        [403, 150],
+        [286, 150],
+        [286, 200],
+        [403, 200],
+        [403, 250],
+      ])
+    }
+    points.push(...[
+      // [300,250],
+        [240,250],
+        [240,268],
+        [60,268],
+        [60,250],
+      // [0,250]
+    ])
+  }
+
+  return points.map( ([_x, _y]) => rotate([_x+x-150, _y+y-125]))
+}
+
 module.exports = {
   connector: _fp.flow(halfConnector, Point.yMirror),
   wall: _fp.flow(halfWall, Point.yMirror),
   spaceInvader: _fp.flow(quarterSpaceInvader, Point.yMirror, Point.xMirror),
   fin,
-  reinforcer
+  reinforcer,
+  finModule
 };
