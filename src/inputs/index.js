@@ -1,7 +1,7 @@
 import merge from "lodash/merge";
 import defaultInputs from "./defaults";
 
-function build(existingInputs, overrides={}) {
+function build(existingInputs, overrides = {}) {
   const inputs = merge(existingInputs, overrides);
   inputs.mainPoints = _calculateDefaultPoints(inputs);
   return inputs;

@@ -1,6 +1,6 @@
 const Point = require("../utils/point");
 const _fp = require("lodash/fp");
-import { build } from "../inputs"
+import { build } from "../inputs";
 import defaultInputs from "../inputs/defaults";
 
 const halfConnector = dimensions => {
@@ -64,8 +64,8 @@ const quarterSpaceInvader = dimensions => {
 
 const fin = dimensions => {
   let inputs = defaultInputs;
-  return build(defaultInputs).mainPoints
-}
+  return build(defaultInputs).mainPoints;
+};
 
 module.exports = {
   connector: _fp.flow(halfConnector, Point.yMirror),
