@@ -51,15 +51,29 @@ const makeSVG = input =>
 
 const doPatch = vnode => patch(container, vnode);
 
-const attachModulesToFinEdgePoints = points => {
-  const angle = Point.angle(points[0], points[1]);
+const attachModulesToFinEdgePoints = allPoints => {
   let results = [];
-  points.slice(1, -1).map(([cx, cy], index, { length }) => {
-    results.push([
-      Geometry.finModule(cx, cy, angle, 0, index, length),
-      Geometry.finModule(cx, cy, angle, 1, index, length) //.reverse()
-    ]);
-  });
+  for (let i = 0; i < allPoints.length; i++) {
+    const points = allPoints[i];
+    const angle = Point.angle(points[0], points[1]);
+    let res = [];
+    points.slice(1, -1).map(([cx, cy], index, { length }) => {
+      res.push([
+        Geometry.finModule(
+          cx,
+          cy,
+          angle,
+          0,
+          index,
+          length,
+          i,
+          allPoints.length
+        ),
+        Geometry.finModule(cx, cy, angle, 1, index, length, i, allPoints.length) //.reverse()
+      ]);
+    });
+    results.push(res);
+  }
   return results;
 };
 
@@ -134,10 +148,9 @@ function main() {
     cornerInnerOuterPoints
   ]);
 
-  // modules
-
   const modules = _fp.flow(
-    _fp.map(attachModulesToFinEdgePoints)
+    attachModulesToFinEdgePoints
+    // _fp.map(attachModulesToFinEdgePoints)
   )(calculateFinPoints)
 
   function join([edges, corners]) {

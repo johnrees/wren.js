@@ -111,15 +111,15 @@ const reinforcer = points => {
 };
 
 // prettier-ignore
-const finModule = (x,y,angle,index,i,length) => {
+const finModule = (x,y,angle,index,i,length,i2,length2) => {
   const rotate = Point.rotateAroundPoint([x,y],angle)
   let points = []
   if (index === 0) {
     // outer
 
     // ends
-    if (false && i === 0) {
-      if (false) {
+    if (false && i === 0 && i2===0) {
+      if (true) {
         // rabbitEars
         points.push(...[
           [17, 250],
@@ -154,8 +154,8 @@ const finModule = (x,y,angle,index,i,length) => {
     // inner
 
     // ends
-    if (false && i === length-1) {
-      if (false) {
+    if (false && i === length-1 && i2 === length2-1) {
+      if (true) {
         // rabbitEars
         points.push(...[
           [403, 0],
