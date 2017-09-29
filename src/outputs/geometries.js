@@ -135,7 +135,7 @@ const finModule = (x,y,angle,index,i,length) => {
         ])
       } else {
         points.push(...[
-          [0, 250],
+          // [0, 250],
           [0, 0],
         ])
       }
@@ -176,10 +176,6 @@ const finModule = (x,y,angle,index,i,length) => {
         ])
       }
     }
-
-    points.push(...[
-      // [300, 0],
-    ])
 
     // regular
     points.push(...[

@@ -128,6 +128,7 @@ function main() {
 
   const corners = _fp.flow(
     makeCorners,
+    List.shiftLeft(1),
     // Debug.log
     // _fp.map(connectPoints)
   )([
@@ -136,25 +137,23 @@ function main() {
   ]);
 
   const modules = _fp.flow(
-    // _fp.get('main'),
-    Debug.timeStart("modules"),
     _fp.map(attachModulesToFinEdgePoints),
-    Debug.timeEnd("modules"),
-    // _fp.map(connectPoints)
+    // Debug.log
   )(calculateFinPoints)
 
-  // const selectedModules = _fp.flow(
-  //   arrs => _fp.zip(...arrs),
-  //   _fp.map(Debug.log),
-  //   _fp.map(_fp.flatten),
-  //   _fp.map(Debug.log),
-  // )([modules, corners])
+  function join([edges, corners]) {
+    let arr = []
+    for (let i = 0; i < edges.length; i++) {
+      arr.push([...edges[i], corners[i]])
+    }
+    return arr
+  }
 
   const selectedModules = _fp.flow(
-    // Debug.log,
+    join,
     // _fp.slice(0,-1),
     _fp.flatten,
-  )(modules)
+  )([modules, corners])
 
   const outer = _fp.flow(
     _fp.map(_fp.first),
