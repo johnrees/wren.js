@@ -115,9 +115,12 @@ const finModule = (x,y,angle,index,i,length) => {
   const rotate = Point.rotateAroundPoint([x,y],angle)
   let points = []
   if (index === 0) {
-    // rabbitEars
-    if (i === 0) {
+    // outer
+
+    // ends
+    if (false && i === 0) {
       if (false) {
+        // rabbitEars
         points.push(...[
           [17, 250],
           [17, 200],
@@ -138,6 +141,7 @@ const finModule = (x,y,angle,index,i,length) => {
       }
     }
 
+    // regular
     points.push(...[
       // [0,0],
         [60,0],
@@ -147,9 +151,12 @@ const finModule = (x,y,angle,index,i,length) => {
       // [300,0]
     ])
   } else {
-    // rabbitEars
-    if (i === length-1) {
+    // inner
+
+    // ends
+    if (false && i === length-1) {
       if (false) {
+        // rabbitEars
         points.push(...[
           [403, 0],
           [403, 50],
@@ -164,11 +171,17 @@ const finModule = (x,y,angle,index,i,length) => {
         ])
       } else {
         points.push(...[
-          [300, 0],
+          // [300, 0],
           [300, 250],
         ])
       }
     }
+
+    points.push(...[
+      // [300, 0],
+    ])
+
+    // regular
     points.push(...[
       // [300,250],
         [240,250],

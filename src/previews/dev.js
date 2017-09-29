@@ -55,12 +55,14 @@ const doPatch = vnode => patch(container, vnode);
 
 const attachModulesToFinEdgePoints = points => {
   const angle = Point.angle(points[0], points[1]);
-  let result = [[], []];
+  let results = [];
   points.slice(1, -1).map(([cx, cy], index, { length }) => {
-    result[0].push(Geometry.finModule(cx, cy, angle, 0, index, length));
-    result[1].unshift(Geometry.finModule(cx, cy, angle, 1, index, length));
+    results.push([
+      Geometry.finModule(cx, cy, angle, 0, index, length),
+      Geometry.finModule(cx, cy, angle, 1, index, length) //.reverse()
+    ]);
   });
-  return result[0].concat(result[1]);
+  return results;
 };
 
 const makeCorners = ([mainPoints, ioPoints]) => {
@@ -72,69 +74,117 @@ const makeCorners = ([mainPoints, ioPoints]) => {
     const firstAngle = Point.angle(start, middle);
     const secondAngle = Point.angle(middle, end);
 
-    result.push([
-      Point.rotateAroundPoint(start, firstAngle)([
-        start[0] + 150,
-        start[1] + 125
-      ]),
-      Point.rotateAroundPoint(start, firstAngle)([
-        start[0] + 150,
-        start[1] - 125
-      ]),
-      ioPoints[0][i],
-      Point.rotateAroundPoint(end, secondAngle)([end[0] - 150, end[1] - 125]),
-      Point.rotateAroundPoint(end, secondAngle)([end[0] - 150, end[1] + 125]),
-      ioPoints[1][i]
-    ]);
+    const results = [
+      [
+        // outer
+        Point.rotateAroundPoint(start, firstAngle)([
+          start[0] + 150,
+          start[1] - 125
+        ]),
+        ioPoints[0][i],
+        Point.rotateAroundPoint(end, secondAngle)([end[0] - 150, end[1] - 125])
+      ],
+      [
+        // inner
+        Point.rotateAroundPoint(end, secondAngle)([end[0] - 150, end[1] + 125]),
+        ioPoints[1][i],
+        Point.rotateAroundPoint(start, firstAngle)([
+          start[0] + 150,
+          start[1] + 125
+        ])
+      ]
+    ];
+
+    result.push(results);
   }
   return result;
 };
 
-const allPoints = _fp.flow(Geometry.finMainPoints, Points)();
-
-const calculateFinPoints = _fp.flow(
-  _fp.get("main"),
-  List.loopifyInPairs,
-  _fp.map(Frame.calculateFrameEdgePoints)
-)(allPoints);
-
-const cornerMainPoints = _fp.flow(
-  List.loopifyInPairs,
-  _fp.map(([first, second]) => [...first.slice(-2), second[1]]),
-  List.shiftRight(1)
-)(calculateFinPoints);
-
-const cornerInnerOuterPoints = _fp.flow(
-  _fp.pick(["outer", "inner"]),
-  _fp.values
-)(allPoints);
-
-const corners = _fp.flow(makeCorners, _fp.map(connectPoints))([
-  cornerMainPoints,
-  cornerInnerOuterPoints
-]);
-
 // prettier-ignore
-const circles = _fp.flow(
-  _fp.flatMap(debugPoints)
-);
+function main() {
 
-const modules = _fp.flow(
-  // _fp.get('main'),
-  Debug.timeStart("modules"),
-  _fp.map(attachModulesToFinEdgePoints),
-  Debug.timeEnd("modules"),
-  _fp.map(connectPoints)
-);
+  const allPoints = _fp.flow(
+    Geometry.finMainPoints,
+    Points)();
 
-// prettier-ignore
-const draw = _fp.flow(
-  makeSVG,
-  doPatch
-)({
-  circles: circles(calculateFinPoints),
-  modules: modules(calculateFinPoints),
-  corners: corners
-  // corners: cornerMainPoints,
-  // cornerOI: cornerInnerOuterPoints
-});
+  const calculateFinPoints = _fp.flow(
+    _fp.get("main"),
+    List.loopifyInPairs,
+    _fp.map(Frame.calculateFrameEdgePoints)
+  )(allPoints);
+
+  // corners
+
+  const cornerMainPoints = _fp.flow(
+    List.loopifyInPairs,
+    _fp.map(([first, second]) => [...first.slice(-2), second[1]]),
+    List.shiftRight(1)
+  )(calculateFinPoints);
+
+  const cornerInnerOuterPoints = _fp.flow(
+    _fp.pick(["outer", "inner"]),
+    _fp.values
+  )(allPoints);
+
+  const corners = _fp.flow(
+    makeCorners,
+    // Debug.log
+    // _fp.map(connectPoints)
+  )([
+    cornerMainPoints,
+    cornerInnerOuterPoints
+  ]);
+
+  const modules = _fp.flow(
+    // _fp.get('main'),
+    Debug.timeStart("modules"),
+    _fp.map(attachModulesToFinEdgePoints),
+    Debug.timeEnd("modules"),
+    // _fp.map(connectPoints)
+  )(calculateFinPoints)
+
+  // const selectedModules = _fp.flow(
+  //   arrs => _fp.zip(...arrs),
+  //   _fp.map(Debug.log),
+  //   _fp.map(_fp.flatten),
+  //   _fp.map(Debug.log),
+  // )([modules, corners])
+
+  const selectedModules = _fp.flow(
+    // Debug.log,
+    // _fp.slice(0,-1),
+    _fp.flatten,
+  )(modules)
+
+  const outer = _fp.flow(
+    _fp.map(_fp.first),
+    List.wrap,
+  )(selectedModules)
+
+  const inner = _fp.flow(
+    _fp.map(_fp.last),
+    _fp.reverse,
+    List.wrap,
+  )(selectedModules)
+
+  const everything = _fp.flow(
+    _fp.flatten,
+    List.wrap,
+    _fp.map(connectPoints)
+  )([outer, inner])
+
+  const draw = _fp.flow(
+    makeSVG,
+    doPatch
+  )({
+    circles: _fp.flatMap(debugPoints)(calculateFinPoints),
+    // modules: modules(calculateFinPoints),
+    everything: everything
+    // corners: corners
+    // corners: cornerMainPoints,
+    // cornerOI: cornerInnerOuterPoints
+  });
+
+}
+
+main();
