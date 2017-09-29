@@ -1,6 +1,6 @@
 import ClipperLib from "clipper-lib";
 
-function Points(points, finWidth) {
+function Points(points, finWidth = 250) {
   return {
     main: _offset(points, 0),
     outer: _offset(points, finWidth / 2),

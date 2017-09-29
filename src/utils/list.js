@@ -10,6 +10,16 @@ const loopify = array => {
   return [...array, array[0]];
 };
 
+const shiftRight = places => array => {
+  const arr = array;
+  for (let i = 0; i < places; i++) {
+    arr.unshift(arr.pop());
+  }
+  return arr;
+};
+
+const shiftLeft = places => array => array.concat(array.splice(0, places));
+
 /**
  * Splits an array into groups that loop back to the first value
  * @example
@@ -68,5 +78,7 @@ module.exports = {
   loopifyInGroups,
   loopifyInPairs: loopifyInGroups(2),
   loopify,
-  wrap
+  wrap,
+  shiftRight,
+  shiftLeft
 };

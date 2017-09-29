@@ -103,6 +103,7 @@ const fin = _fp.flow(
   finMainPoints,
   List.loopifyInPairs,
   _fp.map(Frame.calculateFrameEdgePoints)
+  // (arr) => ({ main: arr })
 );
 
 const reinforcer = points => {
@@ -114,20 +115,29 @@ const finModule = (x,y,angle,index,i,length) => {
   const rotate = Point.rotateAroundPoint([x,y],angle)
   let points = []
   if (index === 0) {
+    // rabbitEars
     if (i === 0) {
-      points.push(...[
-        [17, 250],
-        [17, 200],
-        [-85, 200],
-        [-85, 150],
-        [17, 150],
-        [17, 100],
-        [-85, 100],
-        [-85, 50],
-        [17, 50],
-        [17, 0],
-      ])
+      if (false) {
+        points.push(...[
+          [17, 250],
+          [17, 200],
+          [-85, 200],
+          [-85, 150],
+          [17, 150],
+          [17, 100],
+          [-85, 100],
+          [-85, 50],
+          [17, 50],
+          [17, 0],
+        ])
+      } else {
+        points.push(...[
+          [0, 250],
+          [0, 0],
+        ])
+      }
     }
+
     points.push(...[
       // [0,0],
         [60,0],
@@ -137,19 +147,27 @@ const finModule = (x,y,angle,index,i,length) => {
       // [300,0]
     ])
   } else {
+    // rabbitEars
     if (i === length-1) {
-      points.push(...[
-        [403, 0],
-        [403, 50],
-        [286, 50],
-        [286, 100],
-        [403, 100],
-        [403, 150],
-        [286, 150],
-        [286, 200],
-        [403, 200],
-        [403, 250],
-      ])
+      if (false) {
+        points.push(...[
+          [403, 0],
+          [403, 50],
+          [286, 50],
+          [286, 100],
+          [403, 100],
+          [403, 150],
+          [286, 150],
+          [286, 200],
+          [403, 200],
+          [403, 250],
+        ])
+      } else {
+        points.push(...[
+          [300, 0],
+          [300, 250],
+        ])
+      }
     }
     points.push(...[
       // [300,250],
@@ -170,5 +188,6 @@ module.exports = {
   spaceInvader: _fp.flow(quarterSpaceInvader, Point.yMirror, Point.xMirror),
   fin,
   reinforcer,
-  finModule
+  finModule,
+  finMainPoints
 };
