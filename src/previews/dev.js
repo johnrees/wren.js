@@ -102,21 +102,17 @@ const cornerMainPoints = _fp.flow(
   List.loopifyInPairs,
   _fp.map(([first, second]) => [...first.slice(-2), second[1]]),
   List.shiftRight(1)
-  // _fp.flatMap(debugPoints)
 )(calculateFinPoints);
 
 const cornerInnerOuterPoints = _fp.flow(
   _fp.pick(["outer", "inner"]),
   _fp.values
-  // _fp.flatMap(debugPoints),
 )(allPoints);
 
 const corners = _fp.flow(makeCorners, _fp.map(connectPoints))([
   cornerMainPoints,
   cornerInnerOuterPoints
 ]);
-
-console.log(corners);
 
 // prettier-ignore
 const circles = _fp.flow(

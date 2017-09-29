@@ -3,7 +3,7 @@ import { Point } from "../utils";
 function _calculate1DFrameEdgePoints(distance, overrides = null) {
   const defaults = {
     spacing: 300,
-    minDistance: 120
+    minDistance: 200
   };
   const config = overrides ? Object.assign(defaults, overrides) : defaults;
 
