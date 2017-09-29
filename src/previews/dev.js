@@ -15,9 +15,7 @@ const connectPoints = points =>
   h("path", { attrs: { d: SVG.makePathFromPoints(points) } });
 
 const debugPoints = points =>
-  points.map(([cx, cy]) =>
-    h("circle", { attrs: { cx, cy, r: 10, fill: "black" } })
-  );
+  points.map(([cx, cy]) => h("circle", { attrs: { cx, cy, r: 10 } }));
 
 const makeSVG = input =>
   h(
@@ -136,9 +134,10 @@ function main() {
     cornerInnerOuterPoints
   ]);
 
+  // modules
+
   const modules = _fp.flow(
-    _fp.map(attachModulesToFinEdgePoints),
-    // Debug.log
+    _fp.map(attachModulesToFinEdgePoints)
   )(calculateFinPoints)
 
   function join([edges, corners]) {
@@ -155,6 +154,29 @@ function main() {
     _fp.flatten,
   )([modules, corners])
 
+  function stuff(inn) {
+    let res = []
+    for (let i = 0; i < inn.length; i++) {
+      res.push(inn[i][0])
+    }
+    for (let j = inn.length-1; j >= 0; j--) {
+      res.push(inn[j][1])
+    }
+    return res
+    // outer.concat(inner.reverse)
+  }
+
+  const reinforcers = _fp.flow(
+    join,
+    List.loopifyInPairs,
+    _fp.map(
+      ([first, last]) => ([first.slice(-3), last.slice(0,2)]),
+    ),
+    _fp.map(_fp.flatten),
+    _fp.map(stuff),
+    _fp.map(connectPoints)
+  )([modules, corners])
+
   const outer = _fp.flow(
     _fp.map(_fp.first),
     List.wrap,
@@ -166,7 +188,7 @@ function main() {
     List.wrap,
   )(selectedModules)
 
-  const everything = _fp.flow(
+  const fin = _fp.flow(
     _fp.flatten,
     List.wrap,
     _fp.map(connectPoints)
@@ -176,13 +198,28 @@ function main() {
     makeSVG,
     doPatch
   )({
+    fin,
+    reinforcers,
     circles: _fp.flatMap(debugPoints)(calculateFinPoints),
     // modules: modules(calculateFinPoints),
-    everything: everything
     // corners: corners
     // corners: cornerMainPoints,
     // cornerOI: cornerInnerOuterPoints
   });
+
+  var svg = document.querySelector('svg');
+  var point = svg.createSVGPoint();
+
+  function onMouseMove({ clientX, clientY }) {
+    point.x = clientX;
+    point.y = clientY;
+    point = point.matrixTransform(svg.getScreenCTM().inverse())
+  }
+  // svg.addEventListener('mousemove', onMouseMove);
+
+  for (const circle of document.querySelectorAll('circle')) {
+    circle.addEventListener("mousedown", console.log)
+  }
 
 }
 

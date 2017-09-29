@@ -143,12 +143,12 @@ const finModule = (x,y,angle,index,i,length) => {
 
     // regular
     points.push(...[
-      // [0,0],
+      [0,0],
         [60,0],
         [60,-18],
         [240,-18],
         [240,0],
-      // [300,0]
+      [300,0]
     ])
   } else {
     // inner
@@ -179,12 +179,12 @@ const finModule = (x,y,angle,index,i,length) => {
 
     // regular
     points.push(...[
-      // [300,250],
+      [300,250],
         [240,250],
         [240,268],
         [60,268],
         [60,250],
-      // [0,250]
+      [0,250]
     ])
   }
 

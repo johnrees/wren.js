@@ -3,7 +3,7 @@ const config = {
   dimensions: {
     width: 3900,
     height: 4200,
-    roofOffset: 900,
+    roofOffset: 0,
     wallHeight: 2400
   },
   sheet: {
