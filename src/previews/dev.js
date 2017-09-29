@@ -112,12 +112,52 @@ const makeCorners = ([mainPoints, ioPoints]) => {
   return result;
 };
 
+const makeSheet = dir => ([startPoint, endPoint]) => {
+  const angle = Point.angle(startPoint, endPoint);
+  const padding = 60;
+  return [
+    Point.rotateAroundPoint(startPoint, angle)([
+      startPoint[0],
+      startPoint[1] - padding * dir
+    ]),
+    Point.rotateAroundPoint(endPoint, angle)([
+      endPoint[0],
+      endPoint[1] - padding * dir
+    ]),
+    Point.rotateAroundPoint(endPoint, angle)([
+      endPoint[0],
+      endPoint[1] - (1200 + padding) * dir
+    ]),
+    Point.rotateAroundPoint(startPoint, angle)([
+      startPoint[0],
+      startPoint[1] - (1200 + padding) * dir
+    ])
+  ];
+};
+
 // prettier-ignore
 function main() {
 
   const allPoints = _fp.flow(
     Geometry.finMainPoints,
     Points)();
+
+  const sheetings = dir => _fp.flow(
+    List.loopifyInPairs,
+    _fp.map(makeSheet(dir)),
+    Debug.log,
+    _fp.map(connectPoints)
+  )
+
+  const outerSheeting = _fp.flow(
+    _fp.get("outer"),
+    sheetings(1)
+  )(allPoints);
+
+  const innerSheeting = _fp.flow(
+    _fp.get("inner"),
+    sheetings(-1)
+  )(allPoints);
 
   const calculateFinPoints = _fp.flow(
     _fp.get("main"),
@@ -213,6 +253,8 @@ function main() {
   )({
     fin,
     reinforcers,
+    outerSheeting,
+    innerSheeting,
     circles: _fp.flatMap(debugPoints)(calculateFinPoints),
     // modules: modules(calculateFinPoints),
     // corners: corners
