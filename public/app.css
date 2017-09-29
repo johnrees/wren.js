@@ -8,17 +8,30 @@
 path {
   vector-effect: non-scaling-stroke;
 }
+
+circle {
+  cursor: move;
+}
+
 svg {
   max-width: 100%;
   max-height: 100%;
   display: block;
   margin: 0 auto;
 }
+
 #svg_holder {
   width: 100vw;
   height: 100vh;
-  padding: 25px;
+  padding: 50px;
 }
-circle {
-  cursor: move;
+
+body.dark {
+  background: #0c0c0c;
+}
+body.dark path {
+  stroke: white;
+}
+body.dark circle {
+  fill: white;
 }
