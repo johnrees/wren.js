@@ -140,7 +140,8 @@ function main() {
 
   const allPoints = _fp.flow(
     Geometry.finMainPoints,
-    Points)();
+    Points
+  )();
 
   const sheetings = dir => _fp.flow(
     List.loopifyInPairs,

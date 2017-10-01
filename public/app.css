@@ -12,13 +12,14 @@ path {
 circle {
   cursor: move;
   transition: r 0.2s;
+  stroke-width: 100px;
 }
 body.dark circle:hover {
-  r: 50;
+  r: 80;
 }
 body.dark circle:active {
   fill: red;
-  r: 50;
+  r: 80;
 }
 
 g[name=reinforcers] {
@@ -46,4 +47,5 @@ body.dark path {
 }
 body.dark circle {
   fill: white;
+  stroke: transparent;
 }
