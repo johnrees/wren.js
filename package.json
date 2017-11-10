@@ -31,7 +31,7 @@
     "dat.gui": "https://github.com/dataarts/dat.gui",
     "lodash": "^4.17.4",
     "snabbdom": "^0.7.0",
-    "snabbdom-to-html": "^3.3.0"
+    "snabbdom-to-html": "^4.0.0"
   },
   "jest": {
     "testEnvironment": "node"
